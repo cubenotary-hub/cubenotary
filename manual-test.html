@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manual Test - Cube Notary</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+        .test-item { background: white; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #007bff; }
+        .test-item h3 { margin: 0 0 10px 0; color: #333; }
+        .test-item p { margin: 5px 0; color: #666; }
+        .test-item a { color: #007bff; text-decoration: none; }
+        .test-item a:hover { text-decoration: underline; }
+        .status { padding: 5px 10px; border-radius: 3px; font-weight: bold; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Manual Testing Checklist - Cube Notary Website</h1>
+    
+    <div class="test-item">
+        <h3>1. 📱 Responsive Design Test</h3>
+        <p><strong>Test:</strong> Open the main website and resize your browser window</p>
+        <p><strong>Expected:</strong> Layout should adapt smoothly to different screen sizes</p>
+        <p><strong>Check:</strong> Navigation should stack on mobile, buttons should remain clickable</p>
+        <a href="index.html" target="_blank">→ Open Main Website</a>
+    </div>
+
+    <div class="test-item">
+        <h3>2. 📅 Calendar Functionality Test</h3>
+        <p><strong>Test:</strong> Click on any date in the calendar</p>
+        <p><strong>Expected:</strong> Booking modal should open</p>
+        <p><strong>Check:</strong> Modal should display current month with clickable dates</p>
+        <a href="index.html" target="_blank">→ Test Calendar</a>
+    </div>
+
+    <div class="test-item">
+        <h3>3. 📝 Booking Form Test</h3>
+        <p><strong>Test:</strong> Fill out the booking form and submit</p>
+        <p><strong>Expected:</strong> Form validation should work, success message should appear</p>
+        <p><strong>Check:</strong> All required fields should be validated</p>
+        <a href="index.html" target="_blank">→ Test Booking Form</a>
+    </div>
+
+    <div class="test-item">
+        <h3>4. 📞 Contact Links Test</h3>
+        <p><strong>Test:</strong> Click "Call" and "Text" buttons</p>
+        <p><strong>Expected:</strong> Phone app should open for call, SMS app for text</p>
+        <p><strong>Check:</strong> Links should have correct tel: and sms: protocols</p>
+        <a href="index.html" target="_blank">→ Test Contact Buttons</a>
+    </div>
+
+    <div class="test-item">
+        <h3>5. 🎨 Visual Design Test</h3>
+        <p><strong>Test:</strong> Check overall appearance and styling</p>
+        <p><strong>Expected:</strong> Dark theme, blue accents, professional look</p>
+        <p><strong>Check:</strong> Colors should match brand, text should be readable</p>
+        <a href="index.html" target="_blank">→ Check Visual Design</a>
+    </div>
+
+    <div class="test-item">
+        <h3>6. ⌨️ Keyboard Navigation Test</h3>
+        <p><strong>Test:</strong> Use Tab key to navigate through the page</p>
+        <p><strong>Expected:</strong> All interactive elements should be focusable</p>
+        <p><strong>Check:</strong> Focus indicators should be visible</p>
+        <a href="index.html" target="_blank">→ Test Keyboard Navigation</a>
+    </div>
+
+    <div class="test-item">
+        <h3>7. 🔍 SEO Elements Test</h3>
+        <p><strong>Test:</strong> View page source and check meta tags</p>
+        <p><strong>Expected:</strong> Title, description, and structured data should be present</p>
+        <p><strong>Check:</strong> All SEO elements should be properly formatted</p>
+        <a href="index.html" target="_blank">→ Check SEO Elements</a>
+    </div>
+
+    <div class="test-item">
+        <h3>8. 🚀 Performance Test</h3>
+        <p><strong>Test:</strong> Check page load speed and responsiveness</p>
+        <p><strong>Expected:</strong> Page should load quickly, interactions should be smooth</p>
+        <p><strong>Check:</strong> No lag when clicking buttons or opening modals</p>
+        <a href="index.html" target="_blank">→ Test Performance</a>
+    </div>
+
+    <div class="test-item">
+        <h3>9. 📱 Mobile Device Test</h3>
+        <p><strong>Test:</strong> Open on mobile device or use browser dev tools mobile view</p>
+        <p><strong>Expected:</strong> Layout should be mobile-friendly</p>
+        <p><strong>Check:</strong> Text should be readable, buttons should be touch-friendly</p>
+        <a href="index.html" target="_blank">→ Test Mobile View</a>
+    </div>
+
+    <div class="test-item">
+        <h3>10. 🔗 External Links Test</h3>
+        <p><strong>Test:</strong> Click on Yelp review link in footer</p>
+        <p><strong>Expected:</strong> Should open in new tab</p>
+        <p><strong>Check:</strong> Link should work and open external site</p>
+        <a href="index.html" target="_blank">→ Test External Links</a>
+    </div>
+
+    <div style="background: #e7f3ff; padding: 20px; margin: 20px 0; border-radius: 5px; border-left: 4px solid #007bff;">
+        <h3>📋 Testing Notes</h3>
+        <p><strong>All tests should pass for production deployment.</strong></p>
+        <p>If any test fails, note the issue and fix before deploying to Render.</p>
+        <p>Pay special attention to mobile responsiveness and form functionality.</p>
+    </div>
+
+    <div style="background: #fff3cd; padding: 20px; margin: 20px 0; border-radius: 5px; border-left: 4px solid #ffc107;">
+        <h3>⚠️ Known Issues to Check</h3>
+        <p>• Calendar should show current month with all dates available</p>
+        <p>• Modal should close when clicking outside or pressing Escape</p>
+        <p>• Form should validate all required fields</p>
+        <p>• Contact buttons should work on mobile devices</p>
+    </div>
+</body>
+</html>
