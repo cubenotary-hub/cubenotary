@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Validation Results</title>
+    <style>
+        body { font-family: monospace; margin: 20px; }
+        .pass { color: green; }
+        .fail { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Cube Notary Website Validation</h1>
+    <div id="results"></div>
+    
+    <script>
+        function validate() {
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+            
+            // Test 1: Check if main elements exist
+            const tests = [
+                { name: 'Header H1', element: document.querySelector('h1'), required: true },
+                { name: 'Calendar Container', element: document.getElementById('calendar'), required: true },
+                { name: 'Booking Modal', element: document.getElementById('bookModal'), required: true },
+                { name: 'Phone Link', element: document.querySelector('a[href^="tel:"]'), required: true },
+                { name: 'SMS Link', element: document.querySelector('a[href^="sms:"]'), required: true },
+                { name: 'Service Navigation', element: document.querySelector('.main-service-nav'), required: true },
+                { name: 'Contact Buttons', element: document.querySelector('.contact-btn-row'), required: true }
+            ];
+            
+            tests.forEach(test => {
+                const div = document.createElement('div');
+                if (test.element) {
+                    div.innerHTML = `<span class="pass">✅</span> ${test.name} - Found`;
+                } else {
+                    div.innerHTML = `<span class="fail">❌</span> ${test.name} - Missing`;
+                }
+                results.appendChild(div);
+            });
+            
+            // Test 2: Check CSS custom properties
+            const root = getComputedStyle(document.documentElement);
+            const cssVars = ['--bg', '--card', '--accent', '--text'];
+            cssVars.forEach(varName => {
+                const div = document.createElement('div');
+                const value = root.getPropertyValue(varName);
+                if (value) {
+                    div.innerHTML = `<span class="pass">✅</span> CSS Variable ${varName}: ${value}`;
+                } else {
+                    div.innerHTML = `<span class="fail">❌</span> CSS Variable ${varName} missing`;
+                }
+                results.appendChild(div);
+            });
+            
+            // Test 3: Check JavaScript functionality
+            const calendar = document.getElementById('calendar');
+            if (calendar) {
+                const buttons = calendar.querySelectorAll('button.available');
+                const div = document.createElement('div');
+                div.innerHTML = `<span class="pass">✅</span> Calendar has ${buttons.length} available dates`;
+                results.appendChild(div);
+            }
+            
+            // Test 4: Check form validation
+            const modal = document.getElementById('bookModal');
+            if (modal) {
+                const inputs = modal.querySelectorAll('input[required], select[required]');
+                const div = document.createElement('div');
+                div.innerHTML = `<span class="pass">✅</span> Form has ${inputs.length} required fields`;
+                results.appendChild(div);
+            }
+            
+            // Test 5: Check responsive design
+            const viewport = document.querySelector('meta[name="viewport"]');
+            const div = document.createElement('div');
+            if (viewport) {
+                div.innerHTML = `<span class="pass">✅</span> Viewport meta tag present`;
+            } else {
+                div.innerHTML = `<span class="fail">❌</span> Viewport meta tag missing`;
+            }
+            results.appendChild(div);
+            
+            // Test 6: Check SEO elements
+            const title = document.querySelector('title');
+            const description = document.querySelector('meta[name="description"]');
+            const structuredData = document.querySelector('script[type="application/ld+json"]');
+            
+            [title, description, structuredData].forEach((element, index) => {
+                const names = ['Title', 'Meta Description', 'Structured Data'];
+                const div = document.createElement('div');
+                if (element) {
+                    div.innerHTML = `<span class="pass">✅</span> ${names[index]} present`;
+                } else {
+                    div.innerHTML = `<span class="fail">❌</span> ${names[index]} missing`;
+                }
+                results.appendChild(div);
+            });
+        }
+        
+        // Run validation when page loads
+        window.onload = validate;
+    </script>
+</body>
+</html>

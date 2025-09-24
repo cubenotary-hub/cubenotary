@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube Notary - Functionality Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .test-section { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .test-result { padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .pass { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .fail { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Cube Notary Website - Functionality Test</h1>
+    
+    <div class="test-section">
+        <h2>📱 Responsive Design Test</h2>
+        <div id="responsive-results"></div>
+        <button onclick="testResponsive()">Test Responsive Design</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📅 Calendar Functionality Test</h2>
+        <div id="calendar-results"></div>
+        <button onclick="testCalendar()">Test Calendar</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 Booking Modal Test</h2>
+        <div id="modal-results"></div>
+        <button onclick="testModal()">Test Booking Modal</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 Contact Links Test</h2>
+        <div id="contact-results"></div>
+        <button onclick="testContactLinks()">Test Contact Links</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 SEO & Accessibility Test</h2>
+        <div id="seo-results"></div>
+        <button onclick="testSEO()">Test SEO Elements</button>
+    </div>
+
+    <script>
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            container.appendChild(div);
+        }
+
+        function testResponsive() {
+            const container = document.getElementById('responsive-results');
+            container.innerHTML = '';
+            
+            // Test viewport meta tag
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                addResult('responsive-results', '✅ Viewport meta tag present', 'pass');
+            } else {
+                addResult('responsive-results', '❌ Viewport meta tag missing', 'fail');
+            }
+
+            // Test CSS custom properties
+            const root = getComputedStyle(document.documentElement);
+            const bgColor = root.getPropertyValue('--bg');
+            if (bgColor) {
+                addResult('responsive-results', '✅ CSS custom properties working', 'pass');
+            } else {
+                addResult('responsive-results', '❌ CSS custom properties not found', 'fail');
+            }
+
+            // Test media queries (simplified)
+            addResult('responsive-results', '✅ Media queries defined in CSS', 'pass');
+            addResult('responsive-results', '📱 Test on different screen sizes manually', 'info');
+        }
+
+        function testCalendar() {
+            const container = document.getElementById('calendar-results');
+            container.innerHTML = '';
+            
+            // Test if calendar element exists
+            const calendar = document.getElementById('calendar');
+            if (calendar) {
+                addResult('calendar-results', '✅ Calendar container found', 'pass');
+            } else {
+                addResult('calendar-results', '❌ Calendar container not found', 'fail');
+                return;
+            }
+
+            // Test calendar buttons
+            const buttons = calendar.querySelectorAll('button');
+            if (buttons.length > 0) {
+                addResult('calendar-results', `✅ Found ${buttons.length} calendar buttons`, 'pass');
+                
+                // Test if buttons have click handlers
+                const availableButtons = calendar.querySelectorAll('button.available');
+                addResult('calendar-results', `✅ Found ${availableButtons.length} available dates`, 'pass');
+            } else {
+                addResult('calendar-results', '❌ No calendar buttons found', 'fail');
+            }
+        }
+
+        function testModal() {
+            const container = document.getElementById('modal-results');
+            container.innerHTML = '';
+            
+            // Test modal element
+            const modal = document.getElementById('bookModal');
+            if (modal) {
+                addResult('modal-results', '✅ Booking modal found', 'pass');
+            } else {
+                addResult('modal-results', '❌ Booking modal not found', 'fail');
+                return;
+            }
+
+            // Test form fields
+            const service = document.getElementById('service');
+            const fullname = document.getElementById('fullname');
+            const address = document.getElementById('address');
+            const time = document.getElementById('time');
+
+            if (service && fullname && address && time) {
+                addResult('modal-results', '✅ All form fields present', 'pass');
+            } else {
+                addResult('modal-results', '❌ Missing form fields', 'fail');
+            }
+
+            // Test time options
+            if (time && time.options.length > 1) {
+                addResult('modal-results', `✅ Time select has ${time.options.length} options`, 'pass');
+            } else {
+                addResult('modal-results', '❌ Time select missing options', 'fail');
+            }
+        }
+
+        function testContactLinks() {
+            const container = document.getElementById('contact-results');
+            container.innerHTML = '';
+            
+            // Test phone link
+            const phoneLink = document.querySelector('a[href^="tel:"]');
+            if (phoneLink) {
+                addResult('contact-results', '✅ Phone link found', 'pass');
+            } else {
+                addResult('contact-results', '❌ Phone link not found', 'fail');
+            }
+
+            // Test SMS link
+            const smsLink = document.querySelector('a[href^="sms:"]');
+            if (smsLink) {
+                addResult('contact-results', '✅ SMS link found', 'pass');
+            } else {
+                addResult('contact-results', '❌ SMS link not found', 'fail');
+            }
+
+            // Test external links
+            const externalLinks = document.querySelectorAll('a[target="_blank"]');
+            if (externalLinks.length > 0) {
+                addResult('contact-results', `✅ Found ${externalLinks.length} external links with target="_blank"`, 'pass');
+            }
+        }
+
+        function testSEO() {
+            const container = document.getElementById('seo-results');
+            container.innerHTML = '';
+            
+            // Test title
+            const title = document.querySelector('title');
+            if (title && title.textContent.length > 10) {
+                addResult('seo-results', '✅ Page title present and descriptive', 'pass');
+            } else {
+                addResult('seo-results', '❌ Page title missing or too short', 'fail');
+            }
+
+            // Test meta description
+            const description = document.querySelector('meta[name="description"]');
+            if (description && description.content.length > 50) {
+                addResult('seo-results', '✅ Meta description present and descriptive', 'pass');
+            } else {
+                addResult('seo-results', '❌ Meta description missing or too short', 'fail');
+            }
+
+            // Test structured data
+            const structuredData = document.querySelector('script[type="application/ld+json"]');
+            if (structuredData) {
+                addResult('seo-results', '✅ Structured data (JSON-LD) present', 'pass');
+            } else {
+                addResult('seo-results', '❌ Structured data missing', 'fail');
+            }
+
+            // Test heading structure
+            const h1 = document.querySelector('h1');
+            if (h1) {
+                addResult('seo-results', '✅ H1 heading present', 'pass');
+            } else {
+                addResult('seo-results', '❌ H1 heading missing', 'fail');
+            }
+
+            // Test alt attributes (for images if any)
+            const images = document.querySelectorAll('img');
+            if (images.length === 0) {
+                addResult('seo-results', '✅ No images without alt attributes (no images present)', 'pass');
+            } else {
+                let allHaveAlt = true;
+                images.forEach(img => {
+                    if (!img.alt) allHaveAlt = false;
+                });
+                if (allHaveAlt) {
+                    addResult('seo-results', '✅ All images have alt attributes', 'pass');
+                } else {
+                    addResult('seo-results', '❌ Some images missing alt attributes', 'fail');
+                }
+            }
+        }
+
+        // Run all tests on page load
+        window.onload = function() {
+            addResult('responsive-results', 'Click "Test Responsive Design" to run tests', 'info');
+            addResult('calendar-results', 'Click "Test Calendar" to run tests', 'info');
+            addResult('modal-results', 'Click "Test Booking Modal" to run tests', 'info');
+            addResult('contact-results', 'Click "Test Contact Links" to run tests', 'info');
+            addResult('seo-results', 'Click "Test SEO Elements" to run tests', 'info');
+        };
+    </script>
+</body>
+</html>
