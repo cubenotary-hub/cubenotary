@@ -9,6 +9,7 @@ Professional notary public website for 24-hour mobile and online notary services
 - **Contact Integration** - Direct call/text functionality
 - **SEO Optimized** - Structured data and meta tags
 - **Modern UI** - Clean, professional dark theme
+- **Professional Logo** - Brand identity with notary stamp design
 
 ## Services
 
@@ -32,7 +33,7 @@ This site is deployed on Render.com as a static site.
 
 1. Push to GitHub repository
 2. Connect to Render.com static site
-3. Configure custom domain (cubenotary.com)
+3. Configure custom domain (www.cubenotary.com)
 4. SSL certificate is automatically provisioned
 
 ## Contact
@@ -41,10 +42,12 @@ This site is deployed on Render.com as a static site.
 - **Text**: (312) 468-3477
 - **Service Area**: Illinois
 - **Hours**: 24/7
+- **Website**: https://www.cubenotary.com
 
 ## Technology Stack
 
 - HTML5
 - CSS3 (Custom Properties, Grid, Flexbox)
 - Vanilla JavaScript
+- SVG Graphics for logo
 - No dependencies or frameworks
