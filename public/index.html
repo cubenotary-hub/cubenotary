@@ -6,6 +6,25 @@
   <meta name="description" content="Cube Notary—24-hour mobile & Remote Online Notary (RON) throughout Illinois. Apostille, Power of Attorney, general notary. Call 312-468-3477 or text us.">
   <meta name="keywords" content="notary near me Chicago, mobile notary Chicago IL, 24 hour notary Illinois, Remote Online Notary RON, apostille service Chicago, power of attorney notary, Cube Notary, Illinois notary public, traveling notary Chicago">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-site-verification" content="ABC123…YOUR_TAG…" />
+  <meta name="consent" content="granted" />
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1276455180998569');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1276455180998569&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 
   <!-- LocalBusiness structured data (AEO favourite) -->
   <script type="application/ld+json">
@@ -209,13 +228,13 @@
     <section class="contact-section">
       <div class="contact-headline">Ready to Get Started?</div>
       <div class="contact-btn-row">
-        <a class="contact-btn btn-call" href="tel:+13124683477" aria-label="Call (312) 468-3477">
+        <a class="contact-btn btn-call" href="tel:+13124683477" aria-label="Call (312) 468-3477" onclick="fbq('track', 'Contact');">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92V19a2 2 0 01-2.18 2 19.86 19.86 0 01-8.63-3.07A19.5 19.5 0 013.07 7.81 19.86 19.86 0 010 3.18 2 2 0 012 1h2.09a2 2 0 012 1.72c.13 1.08.37 2.16.65 3.23a2 2 0 01-.45 2.09l-1.27 1.27a16 16 0 006.88 6.88l1.27-1.27a2 2 0 012.09-.45c1.07.28 2.15.52 3.23.65A2 2 0 0122 16.92z"/>
           </svg>
           <span class="btn-label">Call</span>
         </a>
-        <a class="contact-btn btn-text" href="sms:+13124683477" aria-label="Text (312) 468-3477">
+        <a class="contact-btn btn-text" href="sms:+13124683477" aria-label="Text (312) 468-3477" onclick="fbq('track', 'Contact');">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <rect x="2" y="3" width="20" height="14" rx="3" ry="3"></rect>
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01"></path>
@@ -348,6 +367,8 @@
     function openModal(e) {
       modal.classList.add('show');
       modal.dataset.selectedDay = e.target.dataset.day;
+      // Track appointment booking initiation
+      fbq('track', 'InitiateCheckout');
     }
     document.getElementById('closeModal').onclick = () => modal.classList.remove('show');
     
@@ -399,6 +420,12 @@ Please confirm this appointment.`;
 
       // Create SMS link with the appointment details
       const smsLink = `sms:+13124683477?body=${encodeURIComponent(smsMessage)}`;
+      
+      // Track successful appointment booking
+      fbq('track', 'CompleteRegistration', {
+        content_name: payload.service,
+        content_category: 'Appointment Booking'
+      });
       
       // Open SMS app with pre-filled message
       window.open(smsLink, '_blank');
