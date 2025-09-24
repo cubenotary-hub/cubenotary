@@ -1,0 +1,8 @@
+# Render static site redirects
+# This file tells Render how to handle routing for your static site
+
+# Redirect root to index.html (if needed)
+/ /index.html 200
+
+# Handle any 404s by redirecting to index.html
+/* /index.html 404

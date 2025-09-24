@@ -1,0 +1,20 @@
+{
+  "name": "cubenotary-website",
+  "version": "1.0.0",
+  "description": "Cube Notary - Professional notary public website for 24-hour mobile and online notary services throughout Illinois",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Static site - no build required'"
+  },
+  "keywords": [
+    "notary",
+    "chicago",
+    "illinois",
+    "mobile-notary",
+    "ron",
+    "apostille"
+  ],
+  "author": "Cube Notary",
+  "license": "MIT",
+  "homepage": "https://www.cubenotary.com"
+}
