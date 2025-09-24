@@ -380,48 +380,16 @@
         return;
       }
       
-      // Basic validation
+      // Basic email validation for future enhancement
       if (payload.fullname.length < 2) {
         alert("Please enter a valid full name.");
         return;
       }
       
-      // Format the appointment details for SMS
-      const appointmentDate = `${payload.month}/${payload.day}/${payload.year}`;
-      const smsMessage = `New Appointment Request:
-📅 Date: ${appointmentDate}
-⏰ Time: ${payload.time}
-👤 Name: ${payload.fullname}
-📍 Address: ${payload.address}
-📋 Service: ${payload.service}
-
-Please confirm this appointment.`;
-
-      // Create SMS link with the appointment details
-      const smsLink = `sms:+13124683477?body=${encodeURIComponent(smsMessage)}`;
-      
-      // Open SMS app with pre-filled message
-      window.open(smsLink, '_blank');
-      
-      // Also log to console for backup
-      console.table(payload);
-      
-      // Close modal and reset form
+      console.table(payload); // TODO: send to backend
       modal.classList.remove('show');
       document.querySelectorAll('#bookModal input, #bookModal select').forEach(i => i.value = '');
-      
-      // Show success message with options
-      const userChoice = confirm("SMS app opened with your appointment details! Click OK if SMS opened successfully, or Cancel to copy details manually.");
-      
-      if (!userChoice) {
-        // Fallback: Copy appointment details to clipboard
-        navigator.clipboard.writeText(smsMessage).then(() => {
-          alert("Appointment details copied to clipboard! You can paste them in any messaging app or email.");
-        }).catch(() => {
-          // If clipboard fails, show the message in an alert
-          alert("Appointment details:\n\n" + smsMessage + "\n\nPlease copy this information and send it to (312) 468-3477");
-        });
-      }
+      alert("Appointment request sent! We'll confirm shortly.");
     };
   </script>
 </body>
