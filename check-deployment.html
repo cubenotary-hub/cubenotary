@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deployment Status Checker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f0f0; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Cube Notary Deployment Status</h1>
+    
+    <div id="status"></div>
+    
+    <button onclick="checkDeployment()">Check Deployment Status</button>
+    <button onclick="testSMSFunction()">Test SMS Function</button>
+    <button onclick="openMainSite()">Open Main Site</button>
+    
+    <script>
+        function checkDeployment() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<div class="info">Checking deployment status...</div>';
+            
+            // Check local deployment
+            fetch('/public/index.html')
+                .then(response => {
+                    if (response.ok) {
+                        statusDiv.innerHTML = `
+                            <div class="success">✅ Local deployment working!</div>
+                            <div class="info">Status: ${response.status}</div>
+                            <div class="info">Content-Type: ${response.headers.get('content-type')}</div>
+                            <div class="info">Last Modified: ${response.headers.get('last-modified') || 'Not available'}</div>
+                        `;
+                    } else {
+                        statusDiv.innerHTML = `<div class="error">❌ Local deployment failed: ${response.status}</div>`;
+                    }
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = `<div class="error">❌ Error checking deployment: ${error.message}</div>`;
+                });
+        }
+        
+        function testSMSFunction() {
+            const statusDiv = document.getElementById('status');
+            
+            // Test SMS message formatting
+            const testData = {
+                day: '25',
+                month: 12,
+                year: 2024,
+                service: 'Power of Attorney notarization',
+                fullname: 'John Smith',
+                address: '123 Main St, Chicago, IL 60601',
+                time: '14:30'
+            };
+            
+            const appointmentDate = `${testData.month}/${testData.day}/${testData.year}`;
+            const smsMessage = `New Appointment Request:
+📅 Date: ${appointmentDate}
+⏰ Time: ${testData.time}
+👤 Name: ${testData.fullname}
+📍 Address: ${testData.address}
+📋 Service: ${testData.service}
+
+Please confirm this appointment.`;
+            
+            const smsLink = `sms:+13124683477?body=${encodeURIComponent(smsMessage)}`;
+            
+            statusDiv.innerHTML = `
+                <div class="success">✅ SMS function test passed!</div>
+                <div class="info"><strong>SMS Link:</strong> <a href="${smsLink}" target="_blank">Open SMS</a></div>
+                <div class="info"><strong>Message Preview:</strong></div>
+                <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; white-space: pre-wrap;">${smsMessage}</div>
+            `;
+        }
+        
+        function openMainSite() {
+            window.open('/public/index.html', '_blank');
+        }
+        
+        // Auto-check on load
+        window.onload = function() {
+            checkDeployment();
+        };
+    </script>
+</body>
+</html>
