@@ -256,7 +256,11 @@
     <div class="cal-headline">Book Your Appointment in Seconds</div>
     <div class="cal-hint">Check Availability &amp; Book Online</div>
     <div class="cal-action">Click a date to book.</div>
-    <div class="cal" id="calendar"></div>
+    <div class="cal" id="calendar">
+      <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #666;">
+        Loading calendar...
+      </div>
+    </div>
   </section>
 
   <div class="modal" id="bookModal">
@@ -379,11 +383,16 @@
 
     // Wait for DOM to be fully loaded before generating calendar
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOMContentLoaded fired - starting calendar generation');
       const cal = document.getElementById('calendar');
       if (!cal) {
         console.error('Calendar element not found!');
         return;
       }
+      console.log('Calendar element found, generating calendar...');
+      
+      // Clear any existing content
+      cal.innerHTML = '';
       
       const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
       monthNames.forEach(d => {
@@ -423,6 +432,7 @@
         
         cal.appendChild(btn);
       }
+      console.log(`Calendar generated successfully with ${daysInMonth} days`);
     });
 
     const modal = document.getElementById('bookModal');
