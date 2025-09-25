@@ -46,15 +46,31 @@
       "amount_paid": 25,
       "created_at": "2025-09-25T20:02:44.758Z",
       "updated_at": "2025-09-25T20:02:44.759Z"
+    },
+    {
+      "id": 4,
+      "booking_id": "CN-MFZVYDDE-MOM2V",
+      "customer_name": "Test Customer",
+      "customer_email": "test@example.com",
+      "customer_phone": "",
+      "service_type": "General Notary",
+      "appointment_date": "2024-12-25",
+      "appointment_time": "10:00",
+      "meeting_address": "123 Test St, Chicago, IL",
+      "notes": "Test booking to verify SMS integration",
+      "status": "pending",
+      "amount_paid": 25,
+      "created_at": "2025-09-25T20:48:53.042Z",
+      "updated_at": "2025-09-25T20:48:53.042Z"
     }
   ],
   "customers": [
     {
       "email": "test@example.com",
-      "name": "Test Frontend",
+      "name": "Test Customer",
       "phone": "",
-      "address": "123 Test Street, Chicago, IL 60601",
-      "updated_at": "2025-09-25T20:02:44.761Z",
+      "address": "123 Test St, Chicago, IL",
+      "updated_at": "2025-09-25T20:48:53.046Z",
       "id": 1,
       "created_at": "2025-09-25T19:43:18.554Z"
     }
@@ -85,6 +101,14 @@
       "message": "New appointment booked:\n\nService: General Notary\nDate: 2025-10-01\nTime: 15:00\nCustomer: Test Frontend\nEmail: test@example.com\nAddress: 123 Test Street, Chicago, IL 60601\nNotes: Testing frontend validation\n\nBooking ID: CN-MFZUB1CM-SQ635",
       "status": "sent",
       "sent_at": "2025-09-25T20:02:44.762Z"
+    },
+    {
+      "id": 4,
+      "booking_id": "CN-MFZVYDDE-MOM2V",
+      "phone_number": "3124683477",
+      "message": "New appointment booked:\n\nService: General Notary\nDate: 2024-12-25\nTime: 10:00\nCustomer: Test Customer\nEmail: test@example.com\nAddress: 123 Test St, Chicago, IL\nNotes: Test booking to verify SMS integration\n\nBooking ID: CN-MFZVYDDE-MOM2V",
+      "status": "sent",
+      "sent_at": "2025-09-25T20:48:53.047Z"
     }
   ]
 }

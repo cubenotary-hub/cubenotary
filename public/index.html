@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Cube Notary | 24-Hr Mobile & Online Notary Chicago IL – RON, Apostille, POA</title>
+  <title>Cube Notary | 24-Hr Mobile & Online Notary Chicago IL – RON, Apostille, POA - v2.4</title>
   <meta name="description" content="Cube Notary—24-hour mobile & Remote Online Notary (RON) throughout Illinois. Apostille, Power of Attorney, general notary. Call 312-468-3477 or text us.">
   <meta name="keywords" content="notary near me Chicago, mobile notary Chicago IL, 24 hour notary Illinois, Remote Online Notary RON, apostille service Chicago, power of attorney notary, Cube Notary, Illinois notary public, traveling notary Chicago">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-site-verification" content="aLu2doSVazCKBIwjEA5ZmtERc6bjFtnkDJifzhwAOaI" />
   <meta name="consent" content="granted" />
+  
 
   <!-- Meta Pixel Code -->
   <script>
@@ -182,6 +183,11 @@
     .cal-headline{text-align:center; font-size:2rem; font-weight:700; margin-bottom:0.2rem; letter-spacing:-.02em; color:var(--accent);}
     .cal-hint{text-align:center; margin-bottom:.5rem; font-size:1.05rem; color:var(--accent); opacity:.92;}
     .cal-action{text-align:center; margin-bottom:.7rem; font-size:.98rem; color:var(--accent); opacity:.85; font-weight:500;}
+    .calendar-container{max-width:400px; margin:0 auto;}
+    .calendar-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding:0 10px;}
+    .calendar-header h3{margin:0; font-size:1.2em; color:var(--accent);}
+    .nav-btn{background:var(--accent); color:#000; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:background .3s;}
+    .nav-btn:hover{background:#fff; color:#000;}
     .cal{display:grid; grid-template-columns:repeat(7,1fr); gap:.5rem;}
     .cal button{background:var(--card); border:2px solid #222; color:var(--text); padding:1rem .5rem; font-size:1rem; border-radius:8px; cursor:pointer; transition:box-shadow .18s, border-color .18s, background .2s; box-shadow:0 0 0 transparent; position:relative; outline:none;}
     .cal button.available{border-color:var(--accent); box-shadow:0 1px 6px rgba(56,189,248,0.08);}
@@ -207,6 +213,7 @@
   </style>
 </head>
 <body>
+  <!-- DEPLOYMENT v2.4 - Phone field removed, SMS auto-sent to (312) 468-3477 -->
   <header>
     <div class="logo-container">
       <div class="logo">
@@ -256,72 +263,48 @@
     <div class="cal-headline">Book Your Appointment in Seconds</div>
     <div class="cal-hint">Check Availability &amp; Book Online</div>
     <div class="cal-action">Click a date to book.</div>
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <button id="prevMonth" class="nav-btn">&lt;</button>
+        <h3 id="currentMonth"></h3>
+        <button id="nextMonth" class="nav-btn">&gt;</button>
+      </div>
       <div class="cal" id="calendar">
         <!-- Calendar will be generated dynamically by JavaScript -->
       </div>
+    </div>
   </section>
 
   <div class="modal" id="bookModal">
     <div class="modal-content">
       <button class="close" id="closeModal" aria-label="Close">&times;</button>
       <h3>Book 24-Hr Appointment</h3>
-      <input type="text" id="service" placeholder="What do you need notarized?" required>
+      
+      <div id="bookingForm">
+        <select id="service" required>
+          <option value="" disabled selected>Select Service Type</option>
+          <option value="General Notary">General Notary</option>
+          <option value="Apostille">Apostille</option>
+          <option value="Power of Attorney">Power of Attorney</option>
+          <option value="RON">Remote Online Notary (RON)</option>
+          <option value="Mobile Notary">Mobile Notary</option>
+        </select>
+        
       <input type="text" id="fullname" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <!-- Phone number field removed - SMS sent automatically to (312) 468-3477 - Deploy v2.3 -->
       <input type="text" id="address" placeholder="Meeting Address" required>
+        
       <select id="time" required>
         <option value="" disabled selected>Select time (24 h)</option>
-        <option value="00:00">00:00</option>
-        <option value="00:30">00:30</option>
-        <option value="01:00">01:00</option>
-        <option value="01:30">01:30</option>
-        <option value="02:00">02:00</option>
-        <option value="02:30">02:30</option>
-        <option value="03:00">03:00</option>
-        <option value="03:30">03:30</option>
-        <option value="04:00">04:00</option>
-        <option value="04:30">04:30</option>
-        <option value="05:00">05:00</option>
-        <option value="05:30">05:30</option>
-        <option value="06:00">06:00</option>
-        <option value="06:30">06:30</option>
-        <option value="07:00">07:00</option>
-        <option value="07:30">07:30</option>
-        <option value="08:00">08:00</option>
-        <option value="08:30">08:30</option>
-        <option value="09:00">09:00</option>
-        <option value="09:30">09:30</option>
-        <option value="10:00">10:00</option>
-        <option value="10:30">10:30</option>
-        <option value="11:00">11:00</option>
-        <option value="11:30">11:30</option>
-        <option value="12:00">12:00</option>
-        <option value="12:30">12:30</option>
-        <option value="13:00">13:00</option>
-        <option value="13:30">13:30</option>
-        <option value="14:00">14:00</option>
-        <option value="14:30">14:30</option>
-        <option value="15:00">15:00</option>
-        <option value="15:30">15:30</option>
-        <option value="16:00">16:00</option>
-        <option value="16:30">16:30</option>
-        <option value="17:00">17:00</option>
-        <option value="17:30">17:30</option>
-        <option value="18:00">18:00</option>
-        <option value="18:30">18:30</option>
-        <option value="19:00">19:00</option>
-        <option value="19:30">19:30</option>
-        <option value="20:00">20:00</option>
-        <option value="20:30">20:30</option>
-        <option value="21:00">21:00</option>
-        <option value="21:30">21:30</option>
-        <option value="22:00">22:00</option>
-        <option value="22:30">22:30</option>
-        <option value="23:00">23:00</option>
-        <option value="23:30">23:30</option>
       </select>
+        
+        <textarea id="notes" placeholder="Additional notes or special requirements (optional)" rows="3"></textarea>
+        
       <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
-        Book your Appointment now
+          Book Appointment
       </button>
+      </div>
     </div>
   </div>
 
@@ -343,102 +326,56 @@
   </footer>
 
   <script>
-    // Booking system - track booked appointments
-    const BOOKING_STORAGE_KEY = 'cubenotary_bookings';
+    // Updated: Simplified booking system with SMS notifications - v2.0
+    // Booking system - integrated with backend API
+    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:3000/api' 
+      : '/api';
     
-    function getBookedAppointments() {
-      const stored = localStorage.getItem(BOOKING_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : {};
-    }
-    
-    function saveBooking(day, month, year, time, service, fullname, address) {
-      const bookings = getBookedAppointments();
-      const bookingKey = `${year}-${month}-${day}-${time}`;
-      bookings[bookingKey] = {
-        day, month, year, time, service, fullname, address,
-        bookedAt: new Date().toISOString()
-      };
-      localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(bookings));
-    }
-    
-    function isTimeSlotBooked(day, month, year, time) {
-      const bookings = getBookedAppointments();
-      const bookingKey = `${year}-${month}-${day}-${time}`;
-      return bookings.hasOwnProperty(bookingKey);
-    }
-    
-    function getBookedTimesForDay(day, month, year) {
-      const bookings = getBookedAppointments();
-      const bookedTimes = [];
-      for (const key in bookings) {
-        const booking = bookings[key];
-        if (booking.day == day && booking.month == month && booking.year == year) {
-          bookedTimes.push(booking.time);
-        }
-      }
-      return bookedTimes;
-    }
-
-    // Simple calendar generation function
-    function generateCalendar() {
+    // Get available time slots for a specific date
+    async function getAvailability(date) {
       try {
-        console.log('Starting calendar generation...');
-    const cal = document.getElementById('calendar');
-        if (!cal) {
-          console.error('Calendar element not found!');
-          return;
-        }
-        
-        // Clear any existing content
-        cal.innerHTML = '';
-        
-        // Add day headers
-    const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-    monthNames.forEach(d => {
-      const div = document.createElement('div');
-      div.className = 'day-header';
-      div.textContent = d;
-      cal.appendChild(div);
-    });
-        
-        // Get current month info
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = now.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const firstDay = new Date(year, month, 1).getDay();
-
-        // Add empty cells for days before month starts
-        for(let i = 0; i < firstDay; i++) {
-          cal.appendChild(document.createElement('div'));
-        }
-        
-        // Add date buttons
-    for(let d = 1; d <= daysInMonth; d++) {
-      const btn = document.createElement('button');
-      btn.textContent = d;
-      btn.dataset.day = d;
-          
-          // For now, make all dates available (we'll add booking logic later)
-      btn.className = "available";
-          btn.title = `Click to book this date`;
-          btn.addEventListener('click', function() {
-            openModal({target: {dataset: {day: d}}});
-          });
-          
-      cal.appendChild(btn);
-        }
-        
-        console.log(`Calendar generated successfully with ${daysInMonth} days`);
-        
+        const response = await fetch(`${API_BASE_URL}/bookings/availability/${date}`);
+        if (!response.ok) throw new Error('Failed to fetch availability');
+        const data = await response.json();
+        return data.available_times || [];
       } catch (error) {
-        console.error('Error generating calendar:', error);
-        const cal = document.getElementById('calendar');
-        if (cal) {
-          cal.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #ff6b6b;">Error loading calendar. Please refresh the page.</div>';
-        }
+        console.error('Error fetching availability:', error);
+        return [];
       }
     }
+    
+    // Create a new booking
+    async function createBooking(bookingData) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/bookings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bookingData)
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to create booking');
+        }
+        
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        console.error('Error creating booking:', error);
+        throw error;
+      }
+    }
+    
+    // Check if a time slot is available
+    async function isTimeSlotAvailable(date, time) {
+      const availableTimes = await getAvailability(date);
+      return availableTimes.includes(time);
+    }
+    
+
 
     // Initialize booking system when DOM is loaded
     // Modern Calendar System
@@ -534,7 +471,7 @@
         }
       }
       
-      createDateButton(day, month, year) {
+      async createDateButton(day, month, year) {
         const button = document.createElement('button');
         button.textContent = day;
         button.className = 'available';
@@ -550,11 +487,22 @@
           button.disabled = true;
           button.title = 'This date has passed';
         } else {
-          // Add click event
-          button.addEventListener('click', () => {
-            console.log(`Date clicked: ${this.monthNames[month]} ${day}, ${year}`);
-            this.openBookingModal(day, month, year);
-          });
+          // Check availability for this date
+          const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+          const availableTimes = await getAvailability(dateString);
+          
+          if (availableTimes.length === 0) {
+            button.className = 'booked';
+            button.disabled = true;
+            button.title = 'No available time slots';
+          } else {
+            button.title = `Click to book ${this.monthNames[month]} ${day}, ${year} (${availableTimes.length} slots available)`;
+            // Add click event
+            button.addEventListener('click', () => {
+              console.log(`Date clicked: ${this.monthNames[month]} ${day}, ${year}`);
+              this.openBookingModal(day, month, year);
+            });
+          }
         }
         
         return button;
@@ -705,34 +653,41 @@
       fbq('track', 'InitiateCheckout');
     }
     
-    function updateTimeDropdown() {
+    async function updateTimeDropdown() {
       const selectedDay = modal.dataset.selectedDay;
       const timeSelect = document.getElementById('time');
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth() + 1;
-      const bookedTimes = getBookedTimesForDay(selectedDay, currentMonth, currentYear);
-      const allTimeSlots = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
       
       // Clear existing options
-      timeSelect.innerHTML = '<option value="" disabled selected>Select time (24 h)</option>';
+      timeSelect.innerHTML = '<option value="" disabled selected>Loading available times...</option>';
+      timeSelect.disabled = true;
       
-      // Add only available time slots
-      allTimeSlots.forEach(time => {
-        if (!bookedTimes.includes(time)) {
-          const option = document.createElement('option');
-          option.value = time;
-          option.textContent = time;
-          timeSelect.appendChild(option);
+      try {
+        // Get available times for the selected date
+        const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${selectedDay.padStart(2, '0')}`;
+        const availableTimes = await getAvailability(dateString);
+        
+        // Clear and populate with available times
+        timeSelect.innerHTML = '<option value="" disabled selected>Select time (24 h)</option>';
+        
+        if (availableTimes.length === 0) {
+          timeSelect.innerHTML = '<option value="" disabled>No available times</option>';
+          timeSelect.disabled = true;
+        } else {
+          availableTimes.forEach(time => {
+            const option = document.createElement('option');
+            option.value = time;
+            option.textContent = time;
+            timeSelect.appendChild(option);
+          });
+          timeSelect.disabled = false;
         }
-      });
-      
-      // If no slots available, show message
-      if (allTimeSlots.filter(time => !bookedTimes.includes(time)).length === 0) {
-        timeSelect.innerHTML = '<option value="" disabled selected>No available times for this date</option>';
+      } catch (error) {
+        console.error('Error loading available times:', error);
+        timeSelect.innerHTML = '<option value="" disabled>Error loading times</option>';
         timeSelect.disabled = true;
-      } else {
-        timeSelect.disabled = false;
       }
     }
     document.getElementById('closeModal').onclick = () => modal.classList.remove('show');
@@ -749,90 +704,87 @@
       }
     });
     
-    document.getElementById('saveBtn').onclick = () => {
+    
+    
+    document.getElementById('saveBtn').onclick = async () => {
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth() + 1;
       
       const payload = {
-        day: modal.dataset.selectedDay,
-        month: currentMonth, 
-        year: currentYear,
-        service: document.getElementById('service').value.trim(),
-        fullname: document.getElementById('fullname').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        time: document.getElementById('time').value
+        customer_name: document.getElementById('fullname').value.trim(),
+        customer_email: document.getElementById('email').value.trim(),
+        // Phone number removed - SMS sent automatically to (312) 468-3477
+        service_type: document.getElementById('service').value.trim(),
+        appointment_date: `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${modal.dataset.selectedDay.padStart(2, '0')}`,
+        appointment_time: document.getElementById('time').value,
+        meeting_address: document.getElementById('address').value.trim(),
+        notes: document.getElementById('notes').value.trim()
       };
       
       // Validation
-      if (!payload.service || !payload.fullname || !payload.address || !payload.time) {
-        alert("Please complete every field."); 
+      if (!payload.service_type || !payload.customer_name || !payload.customer_email || !payload.meeting_address || !payload.appointment_time) {
+        alert("Please complete all required fields."); 
+        return;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(payload.customer_email)) {
+        alert("Please enter a valid email address.");
         return;
       }
       
       // Basic validation
-      if (payload.fullname.length < 2) {
+      if (payload.customer_name.length < 2) {
         alert("Please enter a valid full name.");
         return;
       }
       
-      // Format the appointment details for SMS
-      const appointmentDate = `${payload.month}/${payload.day}/${payload.year}`;
-      const smsMessage = `New Appointment Request:
-📅 Date: ${appointmentDate}
-⏰ Time: ${payload.time}
-👤 Name: ${payload.fullname}
-📍 Address: ${payload.address}
-📋 Service: ${payload.service}
-
-Please confirm this appointment.`;
-
-      // Create SMS link with the appointment details
-      const smsLink = `sms:+13124683477?body=${encodeURIComponent(smsMessage)}`;
+      // Disable button to prevent double submission
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Booking...';
       
-      // Check if time slot is still available (prevent double-booking)
-      if (isTimeSlotBooked(payload.day, payload.month, payload.year, payload.time)) {
-        alert("Sorry, this time slot was just booked by another customer. Please select a different time.");
-        updateTimeDropdown(); // Refresh available times
-        return;
-      }
-      
-      // Save the booking
-      saveBooking(payload.day, payload.month, payload.year, payload.time, payload.service, payload.fullname, payload.address);
-      
-      // Track successful appointment booking
-      fbq('track', 'CompleteRegistration', {
-        content_name: payload.service,
-        content_category: 'Appointment Booking'
-      });
-      
-      // Open SMS app with pre-filled message
-      window.open(smsLink, '_blank');
-      
-      // Also log to console for backup
-      console.table(payload);
-      
-      // Close modal and reset form
-      modal.classList.remove('show');
-      document.querySelectorAll('#bookModal input, #bookModal select').forEach(i => i.value = '');
-      
-      // Show success message with booking details
-      const appointmentDate = `${payload.month}/${payload.day}/${payload.year}`;
-      const userChoice = confirm(`✅ Appointment Booked Successfully!\n\n📅 Date: ${appointmentDate}\n⏰ Time: ${payload.time}\n👤 Name: ${payload.fullname}\n📍 Address: ${payload.address}\n📋 Service: ${payload.service}\n\nSMS app opened with your appointment details! Click OK if SMS opened successfully, or Cancel to copy details manually.`);
-      
-      if (!userChoice) {
-        // Fallback: Copy appointment details to clipboard
+      try {
+        // Create booking via API
+        const result = await createBooking(payload);
+        
+        // Track successful booking
+        fbq('track', 'CompleteRegistration');
+        
+        // Show success message
+        const smsMessage = `New appointment booked:\n\nService: ${payload.service_type}\nDate: ${payload.appointment_date}\nTime: ${payload.appointment_time}\nCustomer: ${payload.customer_name}\nEmail: ${payload.customer_email}\nAddress: ${payload.meeting_address}\nNotes: ${payload.notes}`;
+        
+        // Try to copy to clipboard
         navigator.clipboard.writeText(smsMessage).then(() => {
-          alert("Appointment details copied to clipboard! You can paste them in any messaging app or email.");
+          alert("✅ Appointment Booked Successfully!\n\n📱 SMS automatically sent to (312) 468-3477\n\nDetails also copied to clipboard for your records");
         }).catch(() => {
           // If clipboard fails, show the message in an alert
-          alert("Appointment details:\n\n" + smsMessage + "\n\nPlease copy this information and send it to (312) 468-3477");
+          alert("✅ Appointment Booked Successfully!\n\n📱 SMS automatically sent to (312) 468-3477\n\nDetails:\n\n" + smsMessage);
         });
+        
+        // Close modal and refresh calendar
+        modal.classList.remove('show');
+        document.querySelectorAll('#bookModal input, #bookModal select, #bookModal textarea').forEach(i => i.value = '');
+        
+        // Refresh calendar to show updated availability
+        if (calendar) {
+          calendar.render();
+        }
+        
+      } catch (error) {
+        alert(`Error booking appointment: ${error.message}`);
+      } finally {
+        // Re-enable button
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Book Appointment';
       }
-      
-      // Refresh the calendar to show updated availability
-      location.reload();
     };
+    
+    // Calendar initialization is handled above in the main DOMContentLoaded event
+    
   </script>
+  <!-- Trigger deployment v2.1 - Updated validation -->
 </body>
 </html>
