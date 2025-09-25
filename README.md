@@ -111,6 +111,34 @@ BUSINESS_ADDRESS=Chicago, IL
 4. **Add environment variables in Render dashboard**
 5. **Deploy!**
 
+### Deploy Hook (Automatic Deployment)
+
+For automatic deployments when you push to the main branch, you can use Render's deploy hook:
+
+```bash
+# Trigger deployment manually
+curl -X POST https://api.render.com/deploy/srv-<your-service-id>?key=<your-deploy-key>
+
+# Or use the webhook URL from your Render dashboard
+curl -X POST <your-render-deploy-webhook-url>
+```
+
+**To set up automatic deployment:**
+1. Go to your Render service dashboard
+2. Navigate to "Settings" → "Deploy Hook"
+3. Copy the deploy hook URL
+4. Add it to your GitHub repository webhooks (Settings → Webhooks)
+5. Every push to main branch will trigger automatic deployment
+
+**Manual deployment trigger:**
+```bash
+# Create a deployment trigger file
+echo "Deploy $(date)" > deployment-trigger.txt
+git add deployment-trigger.txt
+git commit -m "Trigger deployment"
+git push origin main
+```
+
 ### Option 2: Heroku
 
 ```bash
