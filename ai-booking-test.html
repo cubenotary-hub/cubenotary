@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cube Notary - AI Booking Agent Test</title>
+  <meta name="description" content="Test page for Cube Notary AI Booking Agent integration">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #000;
+      --card: #111;
+      --accent: #38bdf8;
+      --text: #fff;
+    }
+    
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 2rem 1rem;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .logo {
+      background: #dc2626;
+      border-radius: 50%;
+      padding: 1rem;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    
+    .logo svg {
+      display: block;
+    }
+    
+    h1 {
+      color: var(--accent);
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--text);
+      opacity: 0.8;
+      margin-bottom: 2rem;
+    }
+    
+    .test-section {
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .test-section h2 {
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    
+    .status-indicator {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .status-pending {
+      background: #fbbf24;
+      color: #000;
+    }
+    
+    .status-ready {
+      background: #10b981;
+      color: #fff;
+    }
+    
+    .status-error {
+      background: #ef4444;
+      color: #fff;
+    }
+    
+    .chat-container {
+      background: var(--card);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 2rem;
+      margin: 2rem 0;
+      min-height: 400px;
+    }
+    
+    .chat-placeholder {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text);
+      opacity: 0.6;
+    }
+    
+    .btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 0.5rem;
+      transition: background 0.2s;
+    }
+    
+    .btn:hover {
+      background: #0ea5e9;
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    .instructions {
+      background: #1f2937;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .instructions h3 {
+      color: var(--accent);
+      margin-top: 0;
+    }
+    
+    .instructions ol {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+    }
+    
+    .instructions li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .back-link {
+      text-align: center;
+      margin-top: 3rem;
+    }
+    
+    .back-link a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 0;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .test-section {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="20" r="8" fill="white"/>
+          <circle cx="30" cy="20" r="4" fill="#dc2626"/>
+          <rect x="26" y="28" width="8" height="2" fill="white"/>
+          <rect x="24" y="32" width="12" height="2" fill="white"/>
+        </svg>
+      </div>
+      <h1>AI BOOKING AGENT</h1>
+      <p class="subtitle">Test & Development Environment</p>
+    </div>
+
+    <div class="instructions">
+      <h3>🚀 Implementation Status</h3>
+      <p>This page is for testing the AI Booking Agent integration. Follow these steps:</p>
+      <ol>
+        <li><strong>Landbot Setup:</strong> Create your bot and get the embed code</li>
+        <li><strong>Twilio Configuration:</strong> Set up SMS notifications</li>
+        <li><strong>Zapier Integration:</strong> Connect Landbot to Twilio</li>
+        <li><strong>Test Flow:</strong> Complete a test booking end-to-end</li>
+        <li><strong>Deploy:</strong> Add to main website</li>
+      </ol>
+    </div>
+
+    <div class="test-section">
+      <h2>📋 Setup Checklist</h2>
+      
+      <div id="landbot-status">
+        <span class="status-indicator status-pending">⏳ Pending</span>
+        <strong>Landbot Account Setup</strong>
+        <p>Create account at landbot.io and configure basic chat flow</p>
+      </div>
+      
+      <div id="twilio-status">
+        <span class="status-indicator status-pending">⏳ Pending</span>
+        <strong>Twilio SMS Setup</strong>
+        <p>Configure SMS notifications for (312) 468-3477</p>
+      </div>
+      
+      <div id="zapier-status">
+        <span class="status-indicator status-pending">⏳ Pending</span>
+        <strong>Zapier Integration</strong>
+        <p>Connect Landbot webhook to Twilio SMS</p>
+      </div>
+      
+      <div id="embed-status">
+        <span class="status-indicator status-pending">⏳ Pending</span>
+        <strong>Website Integration</strong>
+        <p>Embed chat widget on main website</p>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>🤖 AI Chat Widget</h2>
+      <p>Once configured, the AI booking agent will appear here:</p>
+      
+      <div class="chat-container" id="chat-container">
+        <div class="chat-placeholder">
+          <h3>Chat Widget Not Configured</h3>
+          <p>Complete the setup steps above to enable the AI booking agent.</p>
+          <p>When ready, replace this placeholder with your Landbot embed code.</p>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 1rem;">
+        <button class="btn" onclick="testBooking()">Test Booking Flow</button>
+        <button class="btn btn-secondary" onclick="checkStatus()">Check Status</button>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>📱 SMS Notification Test</h2>
+      <p>Test SMS notifications will be sent to: <strong>(312) 468-3477</strong></p>
+      
+      <div id="sms-test-results" style="margin-top: 1rem;">
+        <p><em>Complete a test booking to verify SMS notifications are working.</em></p>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>📊 Expected Flow</h2>
+      <ol>
+        <li><strong>Customer visits website</strong> → Sees chat widget</li>
+        <li><strong>Customer clicks chat</strong> → AI assistant greets them</li>
+        <li><strong>AI collects information:</strong>
+          <ul>
+            <li>Service type (Mobile/Remote)</li>
+            <li>Full name</li>
+            <li>Preferred date & time</li>
+            <li>Phone number & email</li>
+            <li>Meeting address (if mobile)</li>
+          </ul>
+        </li>
+        <li><strong>AI confirms booking</strong> → Sends data to Zapier</li>
+        <li><strong>Zapier triggers Twilio</strong> → SMS sent to (312) 468-3477</li>
+        <li><strong>You receive SMS</strong> → New booking notification</li>
+      </ol>
+    </div>
+
+    <div class="test-section">
+      <h2>🔧 Configuration Notes</h2>
+      <div style="background: #1f2937; padding: 1rem; border-radius: 4px; font-family: monospace; font-size: 0.9rem;">
+        <p><strong>Landbot Webhook URL:</strong> <span id="webhook-url">Not configured</span></p>
+        <p><strong>Twilio Phone:</strong> <span id="twilio-phone">Not configured</span></p>
+        <p><strong>Zapier Status:</strong> <span id="zapier-status-text">Not configured</span></p>
+        <p><strong>Last Test:</strong> <span id="last-test">Never</span></p>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="index.html">← Back to Main Website</a>
+    </div>
+  </div>
+
+  <script>
+    // Test functions for development
+    function testBooking() {
+      alert('This will test the complete booking flow once configured.\n\nFor now, use the implementation script to set up:\n1. Landbot account\n2. Twilio SMS\n3. Zapier integration');
+    }
+    
+    function checkStatus() {
+      // This would check the status of all integrations
+      alert('Status check functionality will be available once integrations are configured.\n\nCheck the setup documentation for current status.');
+    }
+    
+    // Placeholder for future Landbot integration
+    function initializeLandbot() {
+      // This is where the Landbot embed code would go
+      console.log('Landbot integration placeholder');
+    }
+    
+    // Update status indicators based on configuration
+    function updateStatus() {
+      // This would check actual configuration status
+      // For now, show pending status
+      console.log('Status update placeholder');
+    }
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('AI Booking Agent Test Page Loaded');
+      updateStatus();
+    });
+  </script>
+</body>
+</html>

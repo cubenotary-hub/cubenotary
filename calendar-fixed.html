@@ -9,6 +9,8 @@
   <meta name="google-site-verification" content="aLu2doSVazCKBIwjEA5ZmtERc6bjFtnkDJifzhwAOaI" />
   <meta name="consent" content="granted" />
   
+  <!-- Stripe.js for payment processing -->
+  <script src="https://js.stripe.com/v3/"></script>
 
   <!-- Meta Pixel Code -->
   <script>
@@ -158,15 +160,6 @@
       background: #12c5a7;
       color: #fff;
     }
-    .btn-secondary {
-      background: #000;
-      color: #38bdf8;
-      border: 2px solid #38bdf8;
-    }
-    .btn-secondary:hover, .btn-secondary:focus {
-      background: #38bdf8;
-      color: #000;
-    }
     .contact-btn svg {
       width: 1.1em;
       height: 1.1em;
@@ -252,12 +245,6 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01"></path>
           </svg>
           <span class="btn-label">Text</span>
-        </a>
-        <a class="contact-btn btn-secondary" href="ai-booking-test.html" aria-label="AI Booking Agent" onclick="fbq('track', 'AI_Booking');">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-          </svg>
-          <span class="btn-label">AI Chat</span>
         </a>
       </div>
     </section>
@@ -348,7 +335,32 @@
         </div>
         
         <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
-          Book Appointment
+          Book & Pay Now
+        </button>
+      </div>
+      
+      <div id="paymentForm" style="display: none;">
+        <h4>Complete Your Payment</h4>
+        <div id="paymentSummary" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+          <h5>Booking Summary</h5>
+          <p><strong>Service:</strong> <span id="summaryService"></span></p>
+          <p><strong>Date:</strong> <span id="summaryDate"></span></p>
+          <p><strong>Time:</strong> <span id="summaryTime"></span></p>
+          <p><strong>Amount:</strong> <span id="summaryAmount"></span></p>
+        </div>
+        
+        <div id="stripe-card-element" style="background: white; padding: 15px; border-radius: 4px; border: 1px solid #ccc; margin: 15px 0;">
+          <!-- Stripe Elements will create form elements here -->
+        </div>
+        
+        <div id="card-errors" role="alert" style="color: #dc3545; margin: 10px 0;"></div>
+        
+        <button id="payBtn" style="background:#28a745; color:white; font-weight:700; cursor:pointer; border:none; padding:.6rem 1.2rem; border-radius:4px; font-size:1rem; width:100%;">
+          Pay $<span id="payAmount">0.00</span> Now
+        </button>
+        
+        <button id="backBtn" style="background:#6c757d; color:white; font-weight:700; cursor:pointer; border:none; padding:.6rem 1.2rem; border-radius:4px; font-size:1rem; width:100%; margin-top:10px;">
+          Back to Booking Form
         </button>
       </div>
     </div>
@@ -372,7 +384,6 @@
   </footer>
 
   <script>
-    
     // Booking system - now integrated with backend
     const BOOKING_STORAGE_KEY = 'cubenotary_bookings';
     
@@ -417,8 +428,6 @@
       }
       return bookedTimes;
     }
-    
-
 
     // Initialize booking system when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
@@ -519,7 +528,6 @@
       }
     });
     
-    
     // Update service fee when service type changes
     document.getElementById('service').addEventListener('change', function() {
       const serviceType = this.value;
@@ -527,7 +535,7 @@
       document.getElementById('feeAmount').textContent = `$${fee.toFixed(2)}`;
     });
     
-    document.getElementById('saveBtn').onclick = () => {
+    document.getElementById('saveBtn').onclick = async () => {
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth() + 1;
@@ -596,7 +604,6 @@
         alert(`Error booking appointment: ${error.message}`);
       }
     };
-    
   </script>
 </body>
 </html>
