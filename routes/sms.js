@@ -33,17 +33,11 @@ Booking ID: ${booking_id}`;
 
     // Store SMS log in database
     const db = getDatabase();
-    await new Promise((resolve, reject) => {
-      db.run(
-        `INSERT INTO sms_logs (booking_id, phone_number, message, status, sent_at)
-         VALUES (?, ?, ?, 'sent', CURRENT_TIMESTAMP)`,
-        [booking_id, '3124683477', smsMessage],
-        (err) => {
-          if (err) reject(err);
-          else resolve();
-        }
-      );
-    });
+    const insertSmsLog = db.prepare(`
+      INSERT INTO sms_logs (booking_id, phone_number, message, status, sent_at)
+      VALUES (?, ?, ?, 'sent', CURRENT_TIMESTAMP)
+    `);
+    insertSmsLog.run(booking_id, '3124683477', smsMessage);
 
     res.json({
       success: true,
@@ -63,16 +57,7 @@ router.get('/logs', async (req, res) => {
     const { limit = 50, offset = 0 } = req.query;
 
     const db = getDatabase();
-    const logs = await new Promise((resolve, reject) => {
-      db.all(
-        'SELECT * FROM sms_logs ORDER BY sent_at DESC LIMIT ? OFFSET ?',
-        [parseInt(limit), parseInt(offset)],
-        (err, rows) => {
-          if (err) reject(err);
-          else resolve(rows);
-        }
-      );
-    });
+    const logs = db.prepare('SELECT * FROM sms_logs ORDER BY sent_at DESC LIMIT ? OFFSET ?').all(parseInt(limit), parseInt(offset));
 
     res.json({ sms_logs: logs });
 
