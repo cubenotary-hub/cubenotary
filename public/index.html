@@ -496,6 +496,7 @@
       }
       
       renderHeader() {
+        // Only render header if elements exist
         if (this.currentMonthEl) {
           const month = this.monthNames[this.currentDate.getMonth()];
           const year = this.currentDate.getFullYear();
