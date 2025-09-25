@@ -325,11 +325,11 @@
       <div id="bookingForm">
         <select id="service" required>
           <option value="" disabled selected>Select Service Type</option>
-          <option value="General Notary">General Notary - $25.00</option>
-          <option value="Apostille">Apostille - $50.00</option>
-          <option value="Power of Attorney">Power of Attorney - $35.00</option>
-          <option value="RON">Remote Online Notary (RON) - $30.00</option>
-          <option value="Mobile Notary">Mobile Notary - $40.00</option>
+          <option value="General Notary">General Notary</option>
+          <option value="Apostille">Apostille</option>
+          <option value="Power of Attorney">Power of Attorney</option>
+          <option value="RON">Remote Online Notary (RON)</option>
+          <option value="Mobile Notary">Mobile Notary</option>
         </select>
         
         <input type="text" id="fullname" placeholder="Full Name" required>
@@ -342,10 +342,6 @@
         </select>
         
         <textarea id="notes" placeholder="Additional notes or special requirements (optional)" rows="3"></textarea>
-        
-        <div id="serviceFee" style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0; text-align: center; font-weight: 600; color: #333;">
-          Service Fee: <span id="feeAmount">$0.00</span>
-        </div>
         
         <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
           Book Appointment
@@ -376,14 +372,6 @@
     // Booking system - now integrated with backend
     const BOOKING_STORAGE_KEY = 'cubenotary_bookings';
     
-    // Service pricing
-    const SERVICE_FEES = {
-      'General Notary': 25.00,
-      'Apostille': 50.00,
-      'Power of Attorney': 35.00,
-      'RON': 30.00,
-      'Mobile Notary': 40.00
-    };
     
     function getBookedAppointments() {
       const stored = localStorage.getItem(BOOKING_STORAGE_KEY);
@@ -520,12 +508,6 @@
     });
     
     
-    // Update service fee when service type changes
-    document.getElementById('service').addEventListener('change', function() {
-      const serviceType = this.value;
-      const fee = SERVICE_FEES[serviceType] || 0;
-      document.getElementById('feeAmount').textContent = `$${fee.toFixed(2)}`;
-    });
     
     document.getElementById('saveBtn').onclick = () => {
       const now = new Date();
@@ -576,8 +558,7 @@
         fbq('track', 'CompleteRegistration');
         
         // Show success message
-        const serviceFee = SERVICE_FEES[payload.service_type] || 0;
-        const smsMessage = `New appointment booked:\n\nService: ${payload.service_type}\nDate: ${payload.appointment_date}\nTime: ${payload.appointment_time}\nCustomer: ${payload.customer_name}\nEmail: ${payload.customer_email}\nPhone: ${payload.customer_phone}\nAddress: ${payload.meeting_address}\nNotes: ${payload.notes}\nFee: $${serviceFee.toFixed(2)}`;
+        const smsMessage = `New appointment booked:\n\nService: ${payload.service_type}\nDate: ${payload.appointment_date}\nTime: ${payload.appointment_time}\nCustomer: ${payload.customer_name}\nEmail: ${payload.customer_email}\nPhone: ${payload.customer_phone}\nAddress: ${payload.meeting_address}\nNotes: ${payload.notes}`;
         
         // Try to copy to clipboard
         navigator.clipboard.writeText(smsMessage).then(() => {
