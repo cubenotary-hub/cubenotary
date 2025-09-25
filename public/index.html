@@ -381,59 +381,77 @@
       return bookedTimes;
     }
 
-    // Wait for DOM to be fully loaded before generating calendar
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOMContentLoaded fired - starting calendar generation');
-      const cal = document.getElementById('calendar');
-      if (!cal) {
-        console.error('Calendar element not found!');
-        return;
-      }
-      console.log('Calendar element found, generating calendar...');
-      
-      // Clear any existing content
-      cal.innerHTML = '';
-      
-      const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-      monthNames.forEach(d => {
-        const div = document.createElement('div');
-        div.className = 'day-header';
-        div.textContent = d;
-        cal.appendChild(div);
-      });
-      
-      const now = new Date(), year = now.getFullYear(), month = now.getMonth();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const firstDay = new Date(year, month, 1).getDay();
-
-      // Generate calendar with booking status
-      for(let i = 0; i < firstDay; i++) cal.appendChild(document.createElement('div'));
-      for(let d = 1; d <= daysInMonth; d++) {
-        const btn = document.createElement('button');
-        btn.textContent = d;
-        btn.dataset.day = d;
-        
-        // Check if this day has any available time slots
-        const bookedTimes = getBookedTimesForDay(d, month + 1, year);
-        const allTimeSlots = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
-        const availableSlots = allTimeSlots.filter(time => !bookedTimes.includes(time));
-        
-        if (availableSlots.length > 0) {
-          btn.className = "available";
-          btn.title = `Click to book this date (${availableSlots.length} slots available)`;
-          btn.addEventListener('click', openModal);
-        } else {
-          btn.className = "booked";
-          btn.title = "Fully booked";
-          btn.disabled = true;
-          btn.style.opacity = "0.5";
-          btn.style.cursor = "not-allowed";
+    // Simple calendar generation function
+    function generateCalendar() {
+      try {
+        console.log('Starting calendar generation...');
+        const cal = document.getElementById('calendar');
+        if (!cal) {
+          console.error('Calendar element not found!');
+          return;
         }
         
-        cal.appendChild(btn);
+        // Clear any existing content
+        cal.innerHTML = '';
+        
+        // Add day headers
+        const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+        monthNames.forEach(d => {
+          const div = document.createElement('div');
+          div.className = 'day-header';
+          div.textContent = d;
+          cal.appendChild(div);
+        });
+        
+        // Get current month info
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
+
+        // Add empty cells for days before month starts
+        for(let i = 0; i < firstDay; i++) {
+          cal.appendChild(document.createElement('div'));
+        }
+        
+        // Add date buttons
+        for(let d = 1; d <= daysInMonth; d++) {
+          const btn = document.createElement('button');
+          btn.textContent = d;
+          btn.dataset.day = d;
+          
+          // For now, make all dates available (we'll add booking logic later)
+          btn.className = "available";
+          btn.title = `Click to book this date`;
+          btn.addEventListener('click', function() {
+            openModal({target: {dataset: {day: d}}});
+          });
+          
+          cal.appendChild(btn);
+        }
+        
+        console.log(`Calendar generated successfully with ${daysInMonth} days`);
+        
+      } catch (error) {
+        console.error('Error generating calendar:', error);
+        const cal = document.getElementById('calendar');
+        if (cal) {
+          cal.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #ff6b6b;">Error loading calendar. Please refresh the page.</div>';
+        }
       }
-      console.log(`Calendar generated successfully with ${daysInMonth} days`);
-    });
+    }
+
+    // Wait for DOM to be fully loaded before generating calendar
+    document.addEventListener('DOMContentLoaded', generateCalendar);
+    
+    // Also try to generate immediately in case DOMContentLoaded already fired
+    if (document.readyState === 'loading') {
+      // DOM is still loading, DOMContentLoaded will fire
+    } else {
+      // DOM is already loaded, generate immediately
+      generateCalendar();
+    }
 
     const modal = document.getElementById('bookModal');
     function openModal(e) {
