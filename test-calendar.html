@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Test - Cube Notary</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin: 20px 0; }
+        .day-header { text-align: center; font-weight: bold; padding: 10px; background: #f8f9fa; }
+        .available { padding: 10px; background: #e3f2fd; border: 1px solid #2196f3; cursor: pointer; }
+        .available:hover { background: #bbdefb; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Calendar Test Page</h1>
+    
+    <div id="test-results"></div>
+    
+    <h2>Calendar Test</h2>
+    <div id="calendar"></div>
+    
+    <h2>Console Logs</h2>
+    <div id="console-logs"></div>
+
+    <script>
+        function addTestResult(message, type = 'info') {
+            const container = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            container.appendChild(div);
+        }
+
+        function addConsoleLog(message) {
+            const container = document.getElementById('console-logs');
+            const div = document.createElement('div');
+            div.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            container.appendChild(div);
+        }
+
+        // Override console.log to capture logs
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addConsoleLog(args.join(' '));
+        };
+
+        // Test calendar generation
+        function generateCalendar() {
+            try {
+                addTestResult('Starting calendar generation...', 'info');
+                
+                const cal = document.getElementById('calendar');
+                if (!cal) {
+                    addTestResult('❌ Calendar element not found!', 'fail');
+                    return;
+                }
+                
+                // Clear any existing content
+                cal.innerHTML = '';
+                
+                // Add day headers
+                const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+                monthNames.forEach(d => {
+                    const div = document.createElement('div');
+                    div.className = 'day-header';
+                    div.textContent = d;
+                    cal.appendChild(div);
+                });
+                
+                // Get current month info
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const firstDay = new Date(year, month, 1).getDay();
+
+                // Add empty cells for days before month starts
+                for(let i = 0; i < firstDay; i++) {
+                    cal.appendChild(document.createElement('div'));
+                }
+                
+                // Add date buttons
+                for(let d = 1; d <= daysInMonth; d++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = d;
+                    btn.dataset.day = d;
+                    btn.className = "available";
+                    btn.title = `Click to book this date`;
+                    btn.addEventListener('click', function() {
+                        addTestResult(`✅ Date ${d} clicked!`, 'pass');
+                        alert(`You clicked on ${d}! Calendar is working.`);
+                    });
+                    
+                    cal.appendChild(btn);
+                }
+                
+                addTestResult(`✅ Calendar generated successfully with ${daysInMonth} days`, 'pass');
+                
+            } catch (error) {
+                addTestResult(`❌ Error generating calendar: ${error.message}`, 'fail');
+                console.error('Calendar generation error:', error);
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            addTestResult('DOM loaded, starting tests...', 'info');
+            generateCalendar();
+        });
+    </script>
+</body>
+</html>

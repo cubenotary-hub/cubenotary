@@ -260,47 +260,10 @@
     <div class="cal-hint">Check Availability &amp; Book Online</div>
     <div class="cal-action">Click a date to book.</div>
     <div class="cal" id="calendar">
-      <!-- Day headers -->
-      <div class="day-header">Sun</div>
-      <div class="day-header">Mon</div>
-      <div class="day-header">Tue</div>
-      <div class="day-header">Wed</div>
-      <div class="day-header">Thu</div>
-      <div class="day-header">Fri</div>
-      <div class="day-header">Sat</div>
-      
-      <!-- Calendar dates for current month -->
-      <button class="available" data-day="1" title="Click to book this date" onclick="openModal({target: {dataset: {day: '1'}}})">1</button>
-      <button class="available" data-day="2" title="Click to book this date" onclick="openModal({target: {dataset: {day: '2'}}})">2</button>
-      <button class="available" data-day="3" title="Click to book this date" onclick="openModal({target: {dataset: {day: '3'}}})">3</button>
-      <button class="available" data-day="4" title="Click to book this date" onclick="openModal({target: {dataset: {day: '4'}}})">4</button>
-      <button class="available" data-day="5" title="Click to book this date" onclick="openModal({target: {dataset: {day: '5'}}})">5</button>
-      <button class="available" data-day="6" title="Click to book this date" onclick="openModal({target: {dataset: {day: '6'}}})">6</button>
-      <button class="available" data-day="7" title="Click to book this date" onclick="openModal({target: {dataset: {day: '7'}}})">7</button>
-      <button class="available" data-day="8" title="Click to book this date" onclick="openModal({target: {dataset: {day: '8'}}})">8</button>
-      <button class="available" data-day="9" title="Click to book this date" onclick="openModal({target: {dataset: {day: '9'}}})">9</button>
-      <button class="available" data-day="10" title="Click to book this date" onclick="openModal({target: {dataset: {day: '10'}}})">10</button>
-      <button class="available" data-day="11" title="Click to book this date" onclick="openModal({target: {dataset: {day: '11'}}})">11</button>
-      <button class="available" data-day="12" title="Click to book this date" onclick="openModal({target: {dataset: {day: '12'}}})">12</button>
-      <button class="available" data-day="13" title="Click to book this date" onclick="openModal({target: {dataset: {day: '13'}}})">13</button>
-      <button class="available" data-day="14" title="Click to book this date" onclick="openModal({target: {dataset: {day: '14'}}})">14</button>
-      <button class="available" data-day="15" title="Click to book this date" onclick="openModal({target: {dataset: {day: '15'}}})">15</button>
-      <button class="available" data-day="16" title="Click to book this date" onclick="openModal({target: {dataset: {day: '16'}}})">16</button>
-      <button class="available" data-day="17" title="Click to book this date" onclick="openModal({target: {dataset: {day: '17'}}})">17</button>
-      <button class="available" data-day="18" title="Click to book this date" onclick="openModal({target: {dataset: {day: '18'}}})">18</button>
-      <button class="available" data-day="19" title="Click to book this date" onclick="openModal({target: {dataset: {day: '19'}}})">19</button>
-      <button class="available" data-day="20" title="Click to book this date" onclick="openModal({target: {dataset: {day: '20'}}})">20</button>
-      <button class="available" data-day="21" title="Click to book this date" onclick="openModal({target: {dataset: {day: '21'}}})">21</button>
-      <button class="available" data-day="22" title="Click to book this date" onclick="openModal({target: {dataset: {day: '22'}}})">22</button>
-      <button class="available" data-day="23" title="Click to book this date" onclick="openModal({target: {dataset: {day: '23'}}})">23</button>
-      <button class="available" data-day="24" title="Click to book this date" onclick="openModal({target: {dataset: {day: '24'}}})">24</button>
-      <button class="available" data-day="25" title="Click to book this date" onclick="openModal({target: {dataset: {day: '25'}}})">25</button>
-      <button class="available" data-day="26" title="Click to book this date" onclick="openModal({target: {dataset: {day: '26'}}})">26</button>
-      <button class="available" data-day="27" title="Click to book this date" onclick="openModal({target: {dataset: {day: '27'}}})">27</button>
-      <button class="available" data-day="28" title="Click to book this date" onclick="openModal({target: {dataset: {day: '28'}}})">28</button>
-      <button class="available" data-day="29" title="Click to book this date" onclick="openModal({target: {dataset: {day: '29'}}})">29</button>
-      <button class="available" data-day="30" title="Click to book this date" onclick="openModal({target: {dataset: {day: '30'}}})">30</button>
-      <button class="available" data-day="31" title="Click to book this date" onclick="openModal({target: {dataset: {day: '31'}}})">31</button>
+      <!-- Calendar will be generated dynamically by JavaScript -->
+      <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #38bdf8;">
+        Loading calendar...
+      </div>
     </div>
   </section>
 
@@ -502,30 +465,30 @@
     function generateCalendar() {
       try {
         console.log('Starting calendar generation...');
-    const cal = document.getElementById('calendar');
+        const cal = document.getElementById('calendar');
         if (!cal) {
           console.error('Calendar element not found!');
           return;
         }
         
-        // Clear any existing content
+        // Clear any existing content (including loading message)
         cal.innerHTML = '';
         
         // Add day headers
-    const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-    monthNames.forEach(d => {
-      const div = document.createElement('div');
-      div.className = 'day-header';
-      div.textContent = d;
-      cal.appendChild(div);
-    });
+        const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+        monthNames.forEach(d => {
+          const div = document.createElement('div');
+          div.className = 'day-header';
+          div.textContent = d;
+          cal.appendChild(div);
+        });
         
         // Get current month info
         const now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
 
         // Add empty cells for days before month starts
         for(let i = 0; i < firstDay; i++) {
@@ -533,19 +496,20 @@
         }
         
         // Add date buttons
-    for(let d = 1; d <= daysInMonth; d++) {
-      const btn = document.createElement('button');
-      btn.textContent = d;
-      btn.dataset.day = d;
-          
-          // For now, make all dates available (we'll add booking logic later)
-      btn.className = "available";
+        for(let d = 1; d <= daysInMonth; d++) {
+          const btn = document.createElement('button');
+          btn.textContent = d;
+          btn.dataset.day = d;
+          btn.className = "available";
           btn.title = `Click to book this date`;
+          
+          // Add click event listener
           btn.addEventListener('click', function() {
+            console.log(`Date ${d} clicked`);
             openModal({target: {dataset: {day: d}}});
           });
           
-      cal.appendChild(btn);
+          cal.appendChild(btn);
         }
         
         console.log(`Calendar generated successfully with ${daysInMonth} days`);
@@ -561,9 +525,23 @@
 
     // Initialize booking system when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-      // Update calendar to show booking status
-      updateCalendarAvailability();
-      console.log('Booking system initialized');
+      console.log('DOM loaded, initializing booking system...');
+      
+      // Generate the calendar dynamically
+      generateCalendar();
+      
+      // Update calendar availability after generation
+      setTimeout(() => {
+        updateCalendarAvailability();
+        console.log('Calendar availability updated');
+      }, 100);
+      
+      // Test if calendar was generated
+      const calendar = document.getElementById('calendar');
+      const buttons = calendar.querySelectorAll('button');
+      console.log(`Calendar generated with ${buttons.length} date buttons`);
+      
+      console.log('Booking system initialized successfully');
     });
     
     function updateCalendarAvailability() {
@@ -612,29 +590,28 @@
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth() + 1;
-      const bookedTimes = getBookedTimesForDay(selectedDay, currentMonth, currentYear);
-      const allTimeSlots = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
+      
+      // Generate all time slots (every 30 minutes)
+      const allTimeSlots = [];
+      for (let hour = 0; hour < 24; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+          const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+          allTimeSlots.push(timeString);
+        }
+      }
       
       // Clear existing options
       timeSelect.innerHTML = '<option value="" disabled selected>Select time (24 h)</option>';
       
-      // Add only available time slots
+      // Add all time slots (for now, we'll implement availability checking later)
       allTimeSlots.forEach(time => {
-        if (!bookedTimes.includes(time)) {
-          const option = document.createElement('option');
-          option.value = time;
-          option.textContent = time;
-          timeSelect.appendChild(option);
-        }
+        const option = document.createElement('option');
+        option.value = time;
+        option.textContent = time;
+        timeSelect.appendChild(option);
       });
       
-      // If no slots available, show message
-      if (allTimeSlots.filter(time => !bookedTimes.includes(time)).length === 0) {
-        timeSelect.innerHTML = '<option value="" disabled selected>No available times for this date</option>';
-        timeSelect.disabled = true;
-      } else {
-        timeSelect.disabled = false;
-      }
+      timeSelect.disabled = false;
     }
     document.getElementById('closeModal').onclick = () => modal.classList.remove('show');
     

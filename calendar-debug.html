@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Calendar Debug Test</title>
+  <style>
+    .cal{display:grid; grid-template-columns:repeat(7,1fr); gap:.5rem; max-width:600px; margin:20px auto;}
+    .cal button{background:#111; border:2px solid #38bdf8; color:#fff; padding:1rem .5rem; font-size:1rem; border-radius:8px; cursor:pointer;}
+    .day-header{text-align:center; font-size:.8rem; opacity:.7; padding:10px;}
+  </style>
+</head>
+<body>
+  <h1>Calendar Debug Test</h1>
+  <div id="calendar"></div>
+  
+  <script>
+    function generateCalendar() {
+      console.log('Starting calendar generation...');
+      const cal = document.getElementById('calendar');
+      if (!cal) {
+        console.error('Calendar element not found!');
+        return;
+      }
+      
+      // Clear any existing content
+      cal.innerHTML = '';
+      
+      // Add day headers
+      const monthNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      monthNames.forEach(d => {
+        const div = document.createElement('div');
+        div.className = 'day-header';
+        div.textContent = d;
+        cal.appendChild(div);
+      });
+      
+      // Get current month info
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const firstDay = new Date(year, month, 1).getDay();
+
+      console.log(`Month: ${month + 1}, Year: ${year}, Days: ${daysInMonth}, First day: ${firstDay}`);
+
+      // Add empty cells for days before month starts
+      for(let i = 0; i < firstDay; i++) {
+        cal.appendChild(document.createElement('div'));
+      }
+      
+      // Add date buttons
+      for(let d = 1; d <= daysInMonth; d++) {
+        const btn = document.createElement('button');
+        btn.textContent = d;
+        btn.dataset.day = d;
+        btn.className = "available";
+        btn.title = `Click to book this date`;
+        
+        // Add click event listener
+        btn.addEventListener('click', function() {
+          console.log(`Date ${d} clicked`);
+          alert(`Date ${d} clicked!`);
+        });
+        
+        cal.appendChild(btn);
+      }
+      
+      console.log(`Calendar generated successfully with ${daysInMonth} days`);
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, generating calendar...');
+      generateCalendar();
+      
+      // Test if calendar was generated
+      const calendar = document.getElementById('calendar');
+      const buttons = calendar.querySelectorAll('button');
+      console.log(`Calendar generated with ${buttons.length} date buttons`);
+    });
+  </script>
+</body>
+</html>

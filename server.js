@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -47,15 +48,23 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('public'));
-  
-  // Serve index.html for all non-API routes
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  });
-}
+// Serve static files
+app.use(express.static('.'));
+
+// Serve index.html for root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve admin.html for admin route
+app.get('/admin.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Serve other static files
+app.get('/test-*.html', (req, res) => {
+  res.sendFile(path.join(__dirname, req.path));
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
