@@ -269,47 +269,7 @@
         <button id="nextMonth" class="nav-btn">&gt;</button>
       </div>
       <div class="cal" id="calendar">
-        <!-- Day headers -->
-        <div class="day-header">Sun</div>
-        <div class="day-header">Mon</div>
-        <div class="day-header">Tue</div>
-        <div class="day-header">Wed</div>
-        <div class="day-header">Thu</div>
-        <div class="day-header">Fri</div>
-        <div class="day-header">Sat</div>
-        
-        <!-- Calendar dates for current month -->
-        <button class="available" data-day="1" title="Click to book this date" onclick="openModal({target: {dataset: {day: '1'}}})">1</button>
-        <button class="available" data-day="2" title="Click to book this date" onclick="openModal({target: {dataset: {day: '2'}}})">2</button>
-        <button class="available" data-day="3" title="Click to book this date" onclick="openModal({target: {dataset: {day: '3'}}})">3</button>
-        <button class="available" data-day="4" title="Click to book this date" onclick="openModal({target: {dataset: {day: '4'}}})">4</button>
-        <button class="available" data-day="5" title="Click to book this date" onclick="openModal({target: {dataset: {day: '5'}}})">5</button>
-        <button class="available" data-day="6" title="Click to book this date" onclick="openModal({target: {dataset: {day: '6'}}})">6</button>
-        <button class="available" data-day="7" title="Click to book this date" onclick="openModal({target: {dataset: {day: '7'}}})">7</button>
-        <button class="available" data-day="8" title="Click to book this date" onclick="openModal({target: {dataset: {day: '8'}}})">8</button>
-        <button class="available" data-day="9" title="Click to book this date" onclick="openModal({target: {dataset: {day: '9'}}})">9</button>
-        <button class="available" data-day="10" title="Click to book this date" onclick="openModal({target: {dataset: {day: '10'}}})">10</button>
-        <button class="available" data-day="11" title="Click to book this date" onclick="openModal({target: {dataset: {day: '11'}}})">11</button>
-        <button class="available" data-day="12" title="Click to book this date" onclick="openModal({target: {dataset: {day: '12'}}})">12</button>
-        <button class="available" data-day="13" title="Click to book this date" onclick="openModal({target: {dataset: {day: '13'}}})">13</button>
-        <button class="available" data-day="14" title="Click to book this date" onclick="openModal({target: {dataset: {day: '14'}}})">14</button>
-        <button class="available" data-day="15" title="Click to book this date" onclick="openModal({target: {dataset: {day: '15'}}})">15</button>
-        <button class="available" data-day="16" title="Click to book this date" onclick="openModal({target: {dataset: {day: '16'}}})">16</button>
-        <button class="available" data-day="17" title="Click to book this date" onclick="openModal({target: {dataset: {day: '17'}}})">17</button>
-        <button class="available" data-day="18" title="Click to book this date" onclick="openModal({target: {dataset: {day: '18'}}})">18</button>
-        <button class="available" data-day="19" title="Click to book this date" onclick="openModal({target: {dataset: {day: '19'}}})">19</button>
-        <button class="available" data-day="20" title="Click to book this date" onclick="openModal({target: {dataset: {day: '20'}}})">20</button>
-        <button class="available" data-day="21" title="Click to book this date" onclick="openModal({target: {dataset: {day: '21'}}})">21</button>
-        <button class="available" data-day="22" title="Click to book this date" onclick="openModal({target: {dataset: {day: '22'}}})">22</button>
-        <button class="available" data-day="23" title="Click to book this date" onclick="openModal({target: {dataset: {day: '23'}}})">23</button>
-        <button class="available" data-day="24" title="Click to book this date" onclick="openModal({target: {dataset: {day: '24'}}})">24</button>
-        <button class="available" data-day="25" title="Click to book this date" onclick="openModal({target: {dataset: {day: '25'}}})">25</button>
-        <button class="available" data-day="26" title="Click to book this date" onclick="openModal({target: {dataset: {day: '26'}}})">26</button>
-        <button class="available" data-day="27" title="Click to book this date" onclick="openModal({target: {dataset: {day: '27'}}})">27</button>
-        <button class="available" data-day="28" title="Click to book this date" onclick="openModal({target: {dataset: {day: '28'}}})">28</button>
-        <button class="available" data-day="29" title="Click to book this date" onclick="openModal({target: {dataset: {day: '29'}}})">29</button>
-        <button class="available" data-day="30" title="Click to book this date" onclick="openModal({target: {dataset: {day: '30'}}})">30</button>
-        <button class="available" data-day="31" title="Click to book this date" onclick="openModal({target: {dataset: {day: '31'}}})">31</button>
+        <!-- Calendar will be generated dynamically by JavaScript -->
       </div>
     </div>
   </section>
@@ -329,20 +289,20 @@
           <option value="Mobile Notary">Mobile Notary</option>
         </select>
         
-        <input type="text" id="fullname" placeholder="Full Name" required>
+      <input type="text" id="fullname" placeholder="Full Name" required>
         <input type="email" id="email" placeholder="Email Address" required>
         <input type="tel" id="phone" placeholder="Phone Number (optional)">
-        <input type="text" id="address" placeholder="Meeting Address" required>
+      <input type="text" id="address" placeholder="Meeting Address" required>
         
-        <select id="time" required>
-          <option value="" disabled selected>Select time (24 h)</option>
-        </select>
+      <select id="time" required>
+        <option value="" disabled selected>Select time (24 h)</option>
+      </select>
         
         <textarea id="notes" placeholder="Additional notes or special requirements (optional)" rows="3"></textarea>
         
-        <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
+      <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
           Book Appointment
-        </button>
+      </button>
       </div>
     </div>
   </div>
@@ -699,7 +659,7 @@
         });
         
         // Close modal and refresh calendar
-        modal.classList.remove('show');
+      modal.classList.remove('show');
         document.querySelectorAll('#bookModal input, #bookModal select, #bookModal textarea').forEach(i => i.value = '');
         updateCalendarAvailability();
         

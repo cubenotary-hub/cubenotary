@@ -256,49 +256,9 @@
     <div class="cal-headline">Book Your Appointment in Seconds</div>
     <div class="cal-hint">Check Availability &amp; Book Online</div>
     <div class="cal-action">Click a date to book.</div>
-    <div class="cal" id="calendar">
-      <!-- Day headers -->
-      <div class="day-header">Sun</div>
-      <div class="day-header">Mon</div>
-      <div class="day-header">Tue</div>
-      <div class="day-header">Wed</div>
-      <div class="day-header">Thu</div>
-      <div class="day-header">Fri</div>
-      <div class="day-header">Sat</div>
-      
-      <!-- Calendar dates for current month -->
-      <button class="available" data-day="1" title="Click to book this date" onclick="openModal({target: {dataset: {day: '1'}}})">1</button>
-      <button class="available" data-day="2" title="Click to book this date" onclick="openModal({target: {dataset: {day: '2'}}})">2</button>
-      <button class="available" data-day="3" title="Click to book this date" onclick="openModal({target: {dataset: {day: '3'}}})">3</button>
-      <button class="available" data-day="4" title="Click to book this date" onclick="openModal({target: {dataset: {day: '4'}}})">4</button>
-      <button class="available" data-day="5" title="Click to book this date" onclick="openModal({target: {dataset: {day: '5'}}})">5</button>
-      <button class="available" data-day="6" title="Click to book this date" onclick="openModal({target: {dataset: {day: '6'}}})">6</button>
-      <button class="available" data-day="7" title="Click to book this date" onclick="openModal({target: {dataset: {day: '7'}}})">7</button>
-      <button class="available" data-day="8" title="Click to book this date" onclick="openModal({target: {dataset: {day: '8'}}})">8</button>
-      <button class="available" data-day="9" title="Click to book this date" onclick="openModal({target: {dataset: {day: '9'}}})">9</button>
-      <button class="available" data-day="10" title="Click to book this date" onclick="openModal({target: {dataset: {day: '10'}}})">10</button>
-      <button class="available" data-day="11" title="Click to book this date" onclick="openModal({target: {dataset: {day: '11'}}})">11</button>
-      <button class="available" data-day="12" title="Click to book this date" onclick="openModal({target: {dataset: {day: '12'}}})">12</button>
-      <button class="available" data-day="13" title="Click to book this date" onclick="openModal({target: {dataset: {day: '13'}}})">13</button>
-      <button class="available" data-day="14" title="Click to book this date" onclick="openModal({target: {dataset: {day: '14'}}})">14</button>
-      <button class="available" data-day="15" title="Click to book this date" onclick="openModal({target: {dataset: {day: '15'}}})">15</button>
-      <button class="available" data-day="16" title="Click to book this date" onclick="openModal({target: {dataset: {day: '16'}}})">16</button>
-      <button class="available" data-day="17" title="Click to book this date" onclick="openModal({target: {dataset: {day: '17'}}})">17</button>
-      <button class="available" data-day="18" title="Click to book this date" onclick="openModal({target: {dataset: {day: '18'}}})">18</button>
-      <button class="available" data-day="19" title="Click to book this date" onclick="openModal({target: {dataset: {day: '19'}}})">19</button>
-      <button class="available" data-day="20" title="Click to book this date" onclick="openModal({target: {dataset: {day: '20'}}})">20</button>
-      <button class="available" data-day="21" title="Click to book this date" onclick="openModal({target: {dataset: {day: '21'}}})">21</button>
-      <button class="available" data-day="22" title="Click to book this date" onclick="openModal({target: {dataset: {day: '22'}}})">22</button>
-      <button class="available" data-day="23" title="Click to book this date" onclick="openModal({target: {dataset: {day: '23'}}})">23</button>
-      <button class="available" data-day="24" title="Click to book this date" onclick="openModal({target: {dataset: {day: '24'}}})">24</button>
-      <button class="available" data-day="25" title="Click to book this date" onclick="openModal({target: {dataset: {day: '25'}}})">25</button>
-      <button class="available" data-day="26" title="Click to book this date" onclick="openModal({target: {dataset: {day: '26'}}})">26</button>
-      <button class="available" data-day="27" title="Click to book this date" onclick="openModal({target: {dataset: {day: '27'}}})">27</button>
-      <button class="available" data-day="28" title="Click to book this date" onclick="openModal({target: {dataset: {day: '28'}}})">28</button>
-      <button class="available" data-day="29" title="Click to book this date" onclick="openModal({target: {dataset: {day: '29'}}})">29</button>
-      <button class="available" data-day="30" title="Click to book this date" onclick="openModal({target: {dataset: {day: '30'}}})">30</button>
-      <button class="available" data-day="31" title="Click to book this date" onclick="openModal({target: {dataset: {day: '31'}}})">31</button>
-    </div>
+      <div class="cal" id="calendar">
+        <!-- Calendar will be generated dynamically by JavaScript -->
+      </div>
   </section>
 
   <div class="modal" id="bookModal">
@@ -481,10 +441,152 @@
     }
 
     // Initialize booking system when DOM is loaded
+    // Modern Calendar System
+    class ModernCalendar {
+      constructor() {
+        this.currentDate = new Date();
+        this.calendar = document.getElementById('calendar');
+        this.currentMonthEl = document.getElementById('currentMonth');
+        this.prevBtn = document.getElementById('prevMonth');
+        this.nextBtn = document.getElementById('nextMonth');
+        
+        this.monthNames = [
+          'January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        
+        this.dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        this.init();
+      }
+      
+      init() {
+        if (!this.calendar) {
+          console.error('Calendar element not found!');
+          return;
+        }
+        
+        this.render();
+        this.bindEvents();
+        console.log('Modern calendar initialized successfully');
+      }
+      
+      bindEvents() {
+        if (this.prevBtn) {
+          this.prevBtn.addEventListener('click', () => this.previousMonth());
+        }
+        if (this.nextBtn) {
+          this.nextBtn.addEventListener('click', () => this.nextMonth());
+        }
+      }
+      
+      previousMonth() {
+        this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+        this.render();
+      }
+      
+      nextMonth() {
+        this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+        this.render();
+      }
+      
+      render() {
+        this.renderHeader();
+        this.renderCalendar();
+      }
+      
+      renderHeader() {
+        if (this.currentMonthEl) {
+          const month = this.monthNames[this.currentDate.getMonth()];
+          const year = this.currentDate.getFullYear();
+          this.currentMonthEl.textContent = `${month} ${year}`;
+        }
+      }
+      
+      renderCalendar() {
+        // Clear calendar
+        this.calendar.innerHTML = '';
+        
+        // Add day headers
+        this.dayNames.forEach(day => {
+          const header = document.createElement('div');
+          header.className = 'day-header';
+          header.textContent = day;
+          this.calendar.appendChild(header);
+        });
+        
+        // Get month info
+        const year = this.currentDate.getFullYear();
+        const month = this.currentDate.getMonth();
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        
+        // Add empty cells for days before month starts
+        for (let i = 0; i < firstDay; i++) {
+          this.calendar.appendChild(document.createElement('div'));
+        }
+        
+        // Add date buttons
+        for (let day = 1; day <= daysInMonth; day++) {
+          const button = this.createDateButton(day, month, year);
+          this.calendar.appendChild(button);
+        }
+      }
+      
+      createDateButton(day, month, year) {
+        const button = document.createElement('button');
+        button.textContent = day;
+        button.className = 'available';
+        button.title = `Click to book ${this.monthNames[month]} ${day}, ${year}`;
+        
+        // Check if date is in the past
+        const buttonDate = new Date(year, month, day);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (buttonDate < today) {
+          button.className = 'booked';
+          button.disabled = true;
+          button.title = 'This date has passed';
+        } else {
+          // Add click event
+          button.addEventListener('click', () => {
+            console.log(`Date clicked: ${this.monthNames[month]} ${day}, ${year}`);
+            this.openBookingModal(day, month, year);
+          });
+        }
+        
+        return button;
+      }
+      
+      openBookingModal(day, month, year) {
+        const dateString = `${this.monthNames[month]} ${day}, ${year}`;
+        console.log(`Opening booking modal for: ${dateString}`);
+        
+        // Create event object similar to the old system
+        const event = {
+          target: {
+            dataset: {
+              day: day,
+              month: month + 1,
+              year: year
+            }
+          }
+        };
+        
+        openModal(event);
+      }
+    }
+    
+    // Initialize calendar when DOM is loaded
+    let calendar;
     document.addEventListener('DOMContentLoaded', function() {
-      // Update calendar to show booking status
-      updateCalendarAvailability();
-      console.log('Booking system initialized');
+      console.log('DOM loaded, initializing modern calendar system...');
+      
+      // Initialize the modern calendar
+      calendar = new ModernCalendar();
+      
+      console.log('Modern booking system initialized successfully');
     });
     
     function updateCalendarAvailability() {
