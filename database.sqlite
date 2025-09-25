@@ -142,6 +142,38 @@
       "amount_paid": 50,
       "created_at": "2025-09-25T23:41:44.089Z",
       "updated_at": "2025-09-25T23:41:44.089Z"
+    },
+    {
+      "id": 10,
+      "booking_id": "CN-MG028U08-THIR0",
+      "customer_name": "Auto SMS Test",
+      "customer_email": "autosmstest@example.com",
+      "customer_phone": "",
+      "service_type": "General Notary",
+      "appointment_date": "2025-01-01",
+      "appointment_time": "10:00",
+      "meeting_address": "123 Auto SMS Test St, Chicago, IL",
+      "notes": "Testing automatic SMS opening after booking",
+      "status": "pending",
+      "amount_paid": 25,
+      "created_at": "2025-09-25T23:44:58.856Z",
+      "updated_at": "2025-09-25T23:44:58.856Z"
+    },
+    {
+      "id": 11,
+      "booking_id": "CN-MG02A45B-1TP78",
+      "customer_name": "tobi",
+      "customer_email": "cubenotary@gmail.com",
+      "customer_phone": "",
+      "service_type": "General Notary",
+      "appointment_date": "2025-09-25",
+      "appointment_time": "02:00",
+      "meeting_address": "3017 W LEXINGTON ST",
+      "notes": "",
+      "status": "pending",
+      "amount_paid": 25,
+      "created_at": "2025-09-25T23:45:58.655Z",
+      "updated_at": "2025-09-25T23:45:58.655Z"
     }
   ],
   "customers": [
@@ -165,10 +197,10 @@
     },
     {
       "email": "cubenotary@gmail.com",
-      "name": "ihlm",
+      "name": "tobi",
       "phone": "",
       "address": "3017 W LEXINGTON ST",
-      "updated_at": "2025-09-25T21:04:58.082Z",
+      "updated_at": "2025-09-25T23:45:58.657Z",
       "id": 3,
       "created_at": "2025-09-25T21:04:58.082Z"
     },
@@ -189,6 +221,15 @@
       "updated_at": "2025-09-25T23:41:44.093Z",
       "id": 5,
       "created_at": "2025-09-25T23:41:44.093Z"
+    },
+    {
+      "email": "autosmstest@example.com",
+      "name": "Auto SMS Test",
+      "phone": "",
+      "address": "123 Auto SMS Test St, Chicago, IL",
+      "updated_at": "2025-09-25T23:44:58.858Z",
+      "id": 6,
+      "created_at": "2025-09-25T23:44:58.858Z"
     }
   ],
   "payments": [],
@@ -265,6 +306,22 @@
       "message": "New appointment booked:\n\nService: Apostille\nDate: 2025-09-25\nTime: 03:00\nCustomer: tobi\nEmail: oladipupoinc@gmail.com\nAddress: 3017 W LEXINGTON ST\nNotes: None\n\nBooking ID: CN-MG024NQ1-5JNKF",
       "status": "sent",
       "sent_at": "2025-09-25T23:41:44.094Z"
+    },
+    {
+      "id": 10,
+      "booking_id": "CN-MG028U08-THIR0",
+      "phone_number": "3124683477",
+      "message": "New appointment booked:\n\nService: General Notary\nDate: 2025-01-01\nTime: 10:00\nCustomer: Auto SMS Test\nEmail: autosmstest@example.com\nAddress: 123 Auto SMS Test St, Chicago, IL\nNotes: Testing automatic SMS opening after booking\n\nBooking ID: CN-MG028U08-THIR0",
+      "status": "sent",
+      "sent_at": "2025-09-25T23:44:58.859Z"
+    },
+    {
+      "id": 11,
+      "booking_id": "CN-MG02A45B-1TP78",
+      "phone_number": "3124683477",
+      "message": "New appointment booked:\n\nService: General Notary\nDate: 2025-09-25\nTime: 02:00\nCustomer: tobi\nEmail: cubenotary@gmail.com\nAddress: 3017 W LEXINGTON ST\nNotes: None\n\nBooking ID: CN-MG02A45B-1TP78",
+      "status": "sent",
+      "sent_at": "2025-09-25T23:45:58.658Z"
     }
   ]
 }
