@@ -2,15 +2,14 @@ const express = require('express');
 const Joi = require('joi');
 const moment = require('moment');
 const { getDatabase, generateBookingId, dbOperations } = require('../database/init');
-const { sendBookingConfirmation } = require('../services/emailService');
+// Email service removed - using SMS only
 
 const router = express.Router();
 
-// Validation schemas - Made more permissive to ensure bookings work
+// Validation schemas - Phone number removed, email only for contact
 const bookingSchema = Joi.object({
   customer_name: Joi.string().min(1).max(200).required(),
   customer_email: Joi.string().email().required(),
-  customer_phone: Joi.string().max(50).optional().allow(''),
   service_type: Joi.string().valid('General Notary', 'Apostille', 'Power of Attorney', 'RON', 'Mobile Notary').required(),
   appointment_date: Joi.string().required(),
   appointment_time: Joi.string().required(),
@@ -57,11 +56,10 @@ router.get('/availability/:date', async (req, res) => {
 // Create a new booking
 router.post('/', async (req, res) => {
   try {
-    // Basic validation - ensure required fields exist
+    // Basic validation - ensure required fields exist (phone removed)
     const {
       customer_name,
       customer_email,
-      customer_phone,
       service_type,
       appointment_date,
       appointment_time,
@@ -79,11 +77,10 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Use the data as-is (no strict validation)
+    // Use the data as-is (no strict validation, phone removed)
     const value = {
       customer_name: customer_name.trim(),
       customer_email: customer_email.trim(),
-      customer_phone: customer_phone ? customer_phone.trim() : '',
       service_type: service_type.trim(),
       appointment_date: appointment_date.trim(),
       appointment_time: appointment_time.trim(),
@@ -121,12 +118,12 @@ router.post('/', async (req, res) => {
 
     const service_fee = serviceFees[cleanedData.service_type] || 25.00;
 
-    // Insert booking into database
+    // Insert booking into database (phone removed)
     const booking = dbOperations.insertBooking({
       booking_id,
       customer_name: cleanedData.customer_name,
       customer_email: cleanedData.customer_email,
-      customer_phone: cleanedData.customer_phone,
+      customer_phone: '', // No phone number collected
       service_type: cleanedData.service_type,
       appointment_date: cleanedData.appointment_date,
       appointment_time: cleanedData.appointment_time,
@@ -136,11 +133,11 @@ router.post('/', async (req, res) => {
       amount_paid: service_fee
     });
 
-    // Store or update customer information
+    // Store or update customer information (phone removed)
     dbOperations.insertOrUpdateCustomer({
       email: cleanedData.customer_email,
       name: cleanedData.customer_name,
-      phone: cleanedData.customer_phone,
+      phone: '', // No phone number collected
       address: cleanedData.meeting_address
     });
 
@@ -152,7 +149,6 @@ Service: ${cleanedData.service_type}
 Date: ${cleanedData.appointment_date}
 Time: ${cleanedData.appointment_time}
 Customer: ${cleanedData.customer_name}
-Phone: ${cleanedData.customer_phone || 'Not provided'}
 Email: ${cleanedData.customer_email}
 Address: ${cleanedData.meeting_address}
 Notes: ${cleanedData.notes || 'None'}
@@ -176,23 +172,7 @@ Booking ID: ${booking_id}`;
       // Don't fail the booking if SMS fails
     }
 
-    // Send confirmation email (optional)
-    try {
-      await sendBookingConfirmation({
-        booking_id,
-        customer_name: cleanedData.customer_name,
-        customer_email: cleanedData.customer_email,
-        service_type: cleanedData.service_type,
-        appointment_date: cleanedData.appointment_date,
-        appointment_time: cleanedData.appointment_time,
-        meeting_address: cleanedData.meeting_address,
-        service_fee,
-        notes: cleanedData.notes
-      });
-    } catch (emailError) {
-      console.error('Failed to send confirmation email:', emailError);
-      // Don't fail the booking if email fails
-    }
+    // Email functionality removed - using SMS only
 
     res.status(201).json({
       success: true,

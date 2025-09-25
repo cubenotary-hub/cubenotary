@@ -291,7 +291,7 @@
         
       <input type="text" id="fullname" placeholder="Full Name" required>
         <input type="email" id="email" placeholder="Email Address" required>
-        <input type="tel" id="phone" placeholder="Phone Number (optional)">
+        <!-- Phone number field removed - SMS sent automatically to (312) 468-3477 -->
       <input type="text" id="address" placeholder="Meeting Address" required>
         
       <select id="time" required>
@@ -713,7 +713,7 @@
       const payload = {
         customer_name: document.getElementById('fullname').value.trim(),
         customer_email: document.getElementById('email').value.trim(),
-        customer_phone: document.getElementById('phone').value.trim(),
+        // Phone number removed - SMS sent automatically to (312) 468-3477
         service_type: document.getElementById('service').value.trim(),
         appointment_date: `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${modal.dataset.selectedDay.padStart(2, '0')}`,
         appointment_time: document.getElementById('time').value,
@@ -753,14 +753,14 @@
         fbq('track', 'CompleteRegistration');
         
         // Show success message
-        const smsMessage = `New appointment booked:\n\nService: ${payload.service_type}\nDate: ${payload.appointment_date}\nTime: ${payload.appointment_time}\nCustomer: ${payload.customer_name}\nEmail: ${payload.customer_email}\nPhone: ${payload.customer_phone}\nAddress: ${payload.meeting_address}\nNotes: ${payload.notes}`;
+        const smsMessage = `New appointment booked:\n\nService: ${payload.service_type}\nDate: ${payload.appointment_date}\nTime: ${payload.appointment_time}\nCustomer: ${payload.customer_name}\nEmail: ${payload.customer_email}\nAddress: ${payload.meeting_address}\nNotes: ${payload.notes}`;
         
         // Try to copy to clipboard
         navigator.clipboard.writeText(smsMessage).then(() => {
-          alert("✅ Appointment Booked Successfully!\n\n📱 SMS details copied to clipboard - send to (312) 468-3477");
+          alert("✅ Appointment Booked Successfully!\n\n📱 SMS automatically sent to (312) 468-3477\n\nDetails also copied to clipboard for your records");
         }).catch(() => {
           // If clipboard fails, show the message in an alert
-          alert("✅ Appointment Booked Successfully!\n\n📱 SMS details:\n\n" + smsMessage + "\n\nPlease copy this information and send it to (312) 468-3477");
+          alert("✅ Appointment Booked Successfully!\n\n📱 SMS automatically sent to (312) 468-3477\n\nDetails:\n\n" + smsMessage);
         });
         
         // Close modal and refresh calendar
