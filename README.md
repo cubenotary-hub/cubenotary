@@ -116,8 +116,8 @@ BUSINESS_ADDRESS=Chicago, IL
 For automatic deployments when you push to the main branch, you can use Render's deploy hook:
 
 ```bash
-# Trigger deployment manually
-curl -X POST https://api.render.com/deploy/srv-<your-service-id>?key=<your-deploy-key>
+# Trigger deployment manually (Cube Notary Production)
+curl -X POST https://api.render.com/deploy/srv-d3antl9gv73c739cpmvg?key=2-hWcqjg-tw
 
 # Or use the webhook URL from your Render dashboard
 curl -X POST <your-render-deploy-webhook-url>
@@ -251,4 +251,4 @@ MIT License - see LICENSE file for details
 
 ---
 
-**Cube Notary** - Professional 24/7 Notary Services throughout Illinois 
+**Cube Notary** - Professional 24/7 Notary Services throughout Illinois
