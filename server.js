@@ -45,11 +45,13 @@ initializeDatabase();
 const bookingRoutes = require('./routes/bookings');
 const paymentRoutes = require('./routes/payments');
 const emailRoutes = require('./routes/email');
+const smsRoutes = require('./routes/sms');
 
 // API routes
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/email', emailRoutes);
+app.use('/api/sms', smsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

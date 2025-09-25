@@ -326,41 +326,52 @@
 
   <script>
     
-    // Booking system - now integrated with backend
-    const BOOKING_STORAGE_KEY = 'cubenotary_bookings';
+    // Booking system - integrated with backend API
+    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:3000/api' 
+      : '/api';
     
-    
-    function getBookedAppointments() {
-      const stored = localStorage.getItem(BOOKING_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : {};
-    }
-    
-    function saveBooking(day, month, year, time, service, fullname, address) {
-      const bookings = getBookedAppointments();
-      const bookingKey = `${year}-${month}-${day}-${time}`;
-      bookings[bookingKey] = {
-        day, month, year, time, service, fullname, address,
-        bookedAt: new Date().toISOString()
-      };
-      localStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify(bookings));
-    }
-    
-    function isTimeSlotBooked(day, month, year, time) {
-      const bookings = getBookedAppointments();
-      const bookingKey = `${year}-${month}-${day}-${time}`;
-      return bookings.hasOwnProperty(bookingKey);
-    }
-    
-    function getBookedTimesForDay(day, month, year) {
-      const bookings = getBookedAppointments();
-      const bookedTimes = [];
-      for (const key in bookings) {
-        const booking = bookings[key];
-        if (booking.day == day && booking.month == month && booking.year == year) {
-          bookedTimes.push(booking.time);
-        }
+    // Get available time slots for a specific date
+    async function getAvailability(date) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/bookings/availability/${date}`);
+        if (!response.ok) throw new Error('Failed to fetch availability');
+        const data = await response.json();
+        return data.available_times || [];
+      } catch (error) {
+        console.error('Error fetching availability:', error);
+        return [];
       }
-      return bookedTimes;
+    }
+    
+    // Create a new booking
+    async function createBooking(bookingData) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/bookings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bookingData)
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to create booking');
+        }
+        
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        console.error('Error creating booking:', error);
+        throw error;
+      }
+    }
+    
+    // Check if a time slot is available
+    async function isTimeSlotAvailable(date, time) {
+      const availableTimes = await getAvailability(date);
+      return availableTimes.includes(time);
     }
     
 
@@ -459,7 +470,7 @@
         }
       }
       
-      createDateButton(day, month, year) {
+      async createDateButton(day, month, year) {
         const button = document.createElement('button');
         button.textContent = day;
         button.className = 'available';
@@ -475,11 +486,22 @@
           button.disabled = true;
           button.title = 'This date has passed';
         } else {
-          // Add click event
-          button.addEventListener('click', () => {
-            console.log(`Date clicked: ${this.monthNames[month]} ${day}, ${year}`);
-            this.openBookingModal(day, month, year);
-          });
+          // Check availability for this date
+          const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+          const availableTimes = await getAvailability(dateString);
+          
+          if (availableTimes.length === 0) {
+            button.className = 'booked';
+            button.disabled = true;
+            button.title = 'No available time slots';
+          } else {
+            button.title = `Click to book ${this.monthNames[month]} ${day}, ${year} (${availableTimes.length} slots available)`;
+            // Add click event
+            button.addEventListener('click', () => {
+              console.log(`Date clicked: ${this.monthNames[month]} ${day}, ${year}`);
+              this.openBookingModal(day, month, year);
+            });
+          }
         }
         
         return button;
@@ -630,34 +652,42 @@
       fbq('track', 'InitiateCheckout');
     }
     
-    function updateTimeDropdown() {
+    async function updateTimeDropdown() {
       const selectedDay = modal.dataset.selectedDay;
       const timeSelect = document.getElementById('time');
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth() + 1;
       
-      // Generate all time slots (every 30 minutes)
-      const allTimeSlots = [];
-      for (let hour = 0; hour < 24; hour++) {
-        for (let minute = 0; minute < 60; minute += 30) {
-          const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-          allTimeSlots.push(timeString);
-        }
-      }
-      
       // Clear existing options
-      timeSelect.innerHTML = '<option value="" disabled selected>Select time (24 h)</option>';
+      timeSelect.innerHTML = '<option value="" disabled selected>Loading available times...</option>';
+      timeSelect.disabled = true;
       
-      // Add all time slots (for now, we'll implement availability checking later)
-      allTimeSlots.forEach(time => {
-        const option = document.createElement('option');
-        option.value = time;
-        option.textContent = time;
-        timeSelect.appendChild(option);
-      });
-      
-      timeSelect.disabled = false;
+      try {
+        // Get available times for the selected date
+        const dateString = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${selectedDay.padStart(2, '0')}`;
+        const availableTimes = await getAvailability(dateString);
+        
+        // Clear and populate with available times
+        timeSelect.innerHTML = '<option value="" disabled selected>Select time (24 h)</option>';
+        
+        if (availableTimes.length === 0) {
+          timeSelect.innerHTML = '<option value="" disabled>No available times</option>';
+          timeSelect.disabled = true;
+        } else {
+          availableTimes.forEach(time => {
+            const option = document.createElement('option');
+            option.value = time;
+            option.textContent = time;
+            timeSelect.appendChild(option);
+          });
+          timeSelect.disabled = false;
+        }
+      } catch (error) {
+        console.error('Error loading available times:', error);
+        timeSelect.innerHTML = '<option value="" disabled>Error loading times</option>';
+        timeSelect.disabled = true;
+      }
     }
     document.getElementById('closeModal').onclick = () => modal.classList.remove('show');
     
@@ -675,7 +705,7 @@
     
     
     
-    document.getElementById('saveBtn').onclick = () => {
+    document.getElementById('saveBtn').onclick = async () => {
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth() + 1;
@@ -710,15 +740,14 @@
         return;
       }
       
-      // Check for double booking
-      if (isTimeSlotBooked(modal.dataset.selectedDay, currentMonth, currentYear, payload.appointment_time)) {
-        alert("This time slot is already booked. Please select a different time.");
-        return;
-      }
+      // Disable button to prevent double submission
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Booking...';
       
       try {
-        // Save booking to local storage
-        saveBooking(modal.dataset.selectedDay, currentMonth, currentYear, payload.appointment_time, payload.service_type, payload.customer_name, payload.meeting_address);
+        // Create booking via API
+        const result = await createBooking(payload);
         
         // Track successful booking
         fbq('track', 'CompleteRegistration');
@@ -728,19 +757,27 @@
         
         // Try to copy to clipboard
         navigator.clipboard.writeText(smsMessage).then(() => {
-          alert("✅ Appointment Booked Successfully!\n\n📧 Check your email for confirmation.\n\n📱 SMS details copied to clipboard - send to (312) 468-3477");
+          alert("✅ Appointment Booked Successfully!\n\n📱 SMS details copied to clipboard - send to (312) 468-3477");
         }).catch(() => {
           // If clipboard fails, show the message in an alert
-          alert("✅ Appointment Booked Successfully!\n\n📧 Check your email for confirmation.\n\n📱 SMS details:\n\n" + smsMessage + "\n\nPlease copy this information and send it to (312) 468-3477");
+          alert("✅ Appointment Booked Successfully!\n\n📱 SMS details:\n\n" + smsMessage + "\n\nPlease copy this information and send it to (312) 468-3477");
         });
         
         // Close modal and refresh calendar
-      modal.classList.remove('show');
+        modal.classList.remove('show');
         document.querySelectorAll('#bookModal input, #bookModal select, #bookModal textarea').forEach(i => i.value = '');
-        updateCalendarAvailability();
+        
+        // Refresh calendar to show updated availability
+        if (calendar) {
+          calendar.render();
+        }
         
       } catch (error) {
         alert(`Error booking appointment: ${error.message}`);
+      } finally {
+        // Re-enable button
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Book Appointment';
       }
     };
     

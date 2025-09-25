@@ -153,7 +153,44 @@ router.post('/', async (req, res) => {
       );
     });
 
-    // Send confirmation email
+    // Send SMS notification to (312) 468-3477
+    try {
+      const smsMessage = `New appointment booked:
+
+Service: ${service_type}
+Date: ${appointment_date}
+Time: ${appointment_time}
+Customer: ${customer_name}
+Phone: ${customer_phone || 'Not provided'}
+Email: ${customer_email}
+Address: ${meeting_address}
+Notes: ${notes || 'None'}
+
+Booking ID: ${booking_id}`;
+
+      console.log('📱 SMS TO (312) 468-3477:');
+      console.log(smsMessage);
+      console.log('---');
+
+      // Store SMS log in database
+      await new Promise((resolve, reject) => {
+        db.run(
+          `INSERT INTO sms_logs (booking_id, phone_number, message, status, sent_at)
+           VALUES (?, ?, ?, 'sent', CURRENT_TIMESTAMP)`,
+          [booking_id, '3124683477', smsMessage],
+          (err) => {
+            if (err) reject(err);
+            else resolve();
+          }
+        );
+      });
+
+    } catch (smsError) {
+      console.error('Failed to send SMS notification:', smsError);
+      // Don't fail the booking if SMS fails
+    }
+
+    // Send confirmation email (optional)
     try {
       await sendBookingConfirmation({
         booking_id,

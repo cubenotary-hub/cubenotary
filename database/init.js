@@ -88,6 +88,20 @@ async function initializeDatabase() {
         )
       `);
 
+      // Create sms_logs table
+      database.run(`
+        CREATE TABLE IF NOT EXISTS sms_logs (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          booking_id TEXT NOT NULL,
+          phone_number TEXT NOT NULL,
+          message TEXT NOT NULL,
+          status TEXT NOT NULL,
+          sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          error_message TEXT,
+          FOREIGN KEY (booking_id) REFERENCES bookings (booking_id)
+        )
+      `);
+
       // Create indexes for better performance
       database.run(`CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(appointment_date)`);
       database.run(`CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status)`);
