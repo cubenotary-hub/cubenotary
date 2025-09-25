@@ -260,10 +260,47 @@
     <div class="cal-hint">Check Availability &amp; Book Online</div>
     <div class="cal-action">Click a date to book.</div>
     <div class="cal" id="calendar">
-      <!-- Calendar will be generated dynamically by JavaScript -->
-      <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #38bdf8;">
-        Loading calendar...
-      </div>
+      <!-- Day headers -->
+      <div class="day-header">Sun</div>
+      <div class="day-header">Mon</div>
+      <div class="day-header">Tue</div>
+      <div class="day-header">Wed</div>
+      <div class="day-header">Thu</div>
+      <div class="day-header">Fri</div>
+      <div class="day-header">Sat</div>
+      
+      <!-- Calendar dates for current month -->
+      <button class="available" data-day="1" title="Click to book this date" onclick="openModal({target: {dataset: {day: '1'}}})">1</button>
+      <button class="available" data-day="2" title="Click to book this date" onclick="openModal({target: {dataset: {day: '2'}}})">2</button>
+      <button class="available" data-day="3" title="Click to book this date" onclick="openModal({target: {dataset: {day: '3'}}})">3</button>
+      <button class="available" data-day="4" title="Click to book this date" onclick="openModal({target: {dataset: {day: '4'}}})">4</button>
+      <button class="available" data-day="5" title="Click to book this date" onclick="openModal({target: {dataset: {day: '5'}}})">5</button>
+      <button class="available" data-day="6" title="Click to book this date" onclick="openModal({target: {dataset: {day: '6'}}})">6</button>
+      <button class="available" data-day="7" title="Click to book this date" onclick="openModal({target: {dataset: {day: '7'}}})">7</button>
+      <button class="available" data-day="8" title="Click to book this date" onclick="openModal({target: {dataset: {day: '8'}}})">8</button>
+      <button class="available" data-day="9" title="Click to book this date" onclick="openModal({target: {dataset: {day: '9'}}})">9</button>
+      <button class="available" data-day="10" title="Click to book this date" onclick="openModal({target: {dataset: {day: '10'}}})">10</button>
+      <button class="available" data-day="11" title="Click to book this date" onclick="openModal({target: {dataset: {day: '11'}}})">11</button>
+      <button class="available" data-day="12" title="Click to book this date" onclick="openModal({target: {dataset: {day: '12'}}})">12</button>
+      <button class="available" data-day="13" title="Click to book this date" onclick="openModal({target: {dataset: {day: '13'}}})">13</button>
+      <button class="available" data-day="14" title="Click to book this date" onclick="openModal({target: {dataset: {day: '14'}}})">14</button>
+      <button class="available" data-day="15" title="Click to book this date" onclick="openModal({target: {dataset: {day: '15'}}})">15</button>
+      <button class="available" data-day="16" title="Click to book this date" onclick="openModal({target: {dataset: {day: '16'}}})">16</button>
+      <button class="available" data-day="17" title="Click to book this date" onclick="openModal({target: {dataset: {day: '17'}}})">17</button>
+      <button class="available" data-day="18" title="Click to book this date" onclick="openModal({target: {dataset: {day: '18'}}})">18</button>
+      <button class="available" data-day="19" title="Click to book this date" onclick="openModal({target: {dataset: {day: '19'}}})">19</button>
+      <button class="available" data-day="20" title="Click to book this date" onclick="openModal({target: {dataset: {day: '20'}}})">20</button>
+      <button class="available" data-day="21" title="Click to book this date" onclick="openModal({target: {dataset: {day: '21'}}})">21</button>
+      <button class="available" data-day="22" title="Click to book this date" onclick="openModal({target: {dataset: {day: '22'}}})">22</button>
+      <button class="available" data-day="23" title="Click to book this date" onclick="openModal({target: {dataset: {day: '23'}}})">23</button>
+      <button class="available" data-day="24" title="Click to book this date" onclick="openModal({target: {dataset: {day: '24'}}})">24</button>
+      <button class="available" data-day="25" title="Click to book this date" onclick="openModal({target: {dataset: {day: '25'}}})">25</button>
+      <button class="available" data-day="26" title="Click to book this date" onclick="openModal({target: {dataset: {day: '26'}}})">26</button>
+      <button class="available" data-day="27" title="Click to book this date" onclick="openModal({target: {dataset: {day: '27'}}})">27</button>
+      <button class="available" data-day="28" title="Click to book this date" onclick="openModal({target: {dataset: {day: '28'}}})">28</button>
+      <button class="available" data-day="29" title="Click to book this date" onclick="openModal({target: {dataset: {day: '29'}}})">29</button>
+      <button class="available" data-day="30" title="Click to book this date" onclick="openModal({target: {dataset: {day: '30'}}})">30</button>
+      <button class="available" data-day="31" title="Click to book this date" onclick="openModal({target: {dataset: {day: '31'}}})">31</button>
     </div>
   </section>
 
@@ -525,21 +562,16 @@
 
     // Initialize booking system when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM loaded, initializing booking system... v2');
+      console.log('DOM loaded, initializing booking system...');
       
-      // Generate the calendar dynamically
-      generateCalendar();
+      // Update calendar availability for static calendar
+      updateCalendarAvailability();
+      console.log('Calendar availability updated');
       
-      // Update calendar availability after generation
-      setTimeout(() => {
-        updateCalendarAvailability();
-        console.log('Calendar availability updated');
-      }, 100);
-      
-      // Test if calendar was generated
+      // Test if calendar buttons are present
       const calendar = document.getElementById('calendar');
       const buttons = calendar.querySelectorAll('button');
-      console.log(`Calendar generated with ${buttons.length} date buttons`);
+      console.log(`Calendar loaded with ${buttons.length} date buttons`);
       
       console.log('Booking system initialized successfully');
     });
