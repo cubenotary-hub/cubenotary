@@ -1,0 +1,5 @@
+DEPLOYMENT TRIGGER v2.4
+Phone field removed from booking form
+SMS automatically sent to (312) 468-3477
+Email functionality removed
+Timestamp: 2025-01-27
