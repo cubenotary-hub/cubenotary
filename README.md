@@ -1,13 +1,12 @@
 # Cube Notary - Professional Notary Services
 
-Professional notary public website for 24-hour mobile and online notary services throughout Illinois with complete booking system, payment processing, and email confirmations.
+Professional notary public website for 24-hour mobile and online notary services throughout Illinois with modern booking system.
 
 ## 🚀 Features
 
 ### Core Functionality
-- **Interactive Booking Calendar** - Real-time appointment scheduling with availability checking
-- **Secure Payment Processing** - Stripe integration for credit card payments
-- **Email Confirmations** - Automated booking and payment confirmation emails
+- **Modern Interactive Calendar** - Dynamic calendar with month navigation and clickable dates
+- **Complete Booking System** - Service selection, time slots, and appointment scheduling
 - **Admin Dashboard** - Complete booking management interface
 - **Database Integration** - SQLite database for persistent data storage
 
@@ -19,19 +18,18 @@ Professional notary public website for 24-hour mobile and online notary services
 - **Professional Logo** - Brand identity with notary stamp design
 
 ### Business Features
-- **Service Pricing** - Transparent pricing for all services
+- **Service Selection** - Multiple notary service types available
 - **Booking Management** - Complete CRUD operations for appointments
-- **Payment Tracking** - Real-time payment status monitoring
-- **Email Logging** - Track all email communications
+- **Admin Interface** - Easy booking management and tracking
 - **Export Functionality** - CSV export for reporting
 
 ## 📋 Services
 
-- **General Notary Services** - $25.00
-- **Apostille Services** - $50.00
-- **Power of Attorney Notarization** - $35.00
-- **Remote Online Notary (RON)** - $30.00
-- **Mobile Notary Services** - $40.00
+- **General Notary Services** - Available
+- **Apostille Services** - Available
+- **Power of Attorney Notarization** - Available
+- **Remote Online Notary (RON)** - Available
+- **Mobile Notary Services** - Available
 
 ## 🛠️ Technology Stack
 
@@ -39,14 +37,12 @@ Professional notary public website for 24-hour mobile and online notary services
 - HTML5 with semantic markup
 - CSS3 (Custom Properties, Grid, Flexbox)
 - Vanilla JavaScript (ES6+)
-- Stripe.js for payment processing
+- Modern Calendar System with month navigation
 - SVG Graphics for logo and icons
 
 ### Backend
 - Node.js with Express.js
 - SQLite database
-- Nodemailer for email services
-- Stripe API for payments
 - Joi for validation
 - Helmet for security
 
@@ -61,8 +57,6 @@ Professional notary public website for 24-hour mobile and online notary services
 ### Prerequisites
 - Node.js 18+ installed
 - Git installed
-- Email account (Gmail recommended)
-- Stripe account for payments
 
 ### Local Development
 
@@ -77,49 +71,30 @@ Professional notary public website for 24-hour mobile and online notary services
    npm install
    ```
 
-3. **Configure environment:**
-   ```bash
-   cp env.example .env
-   # Edit .env with your credentials
-   ```
-
-4. **Start the development server:**
+3. **Start the development server:**
    ```bash
    npm run dev
    ```
 
-5. **Access the application:**
+4. **Access the application:**
    - Main website: `http://localhost:3000`
    - Admin dashboard: `http://localhost:3000/admin.html`
 
 ### Environment Configuration
 
-Create a `.env` file with the following variables:
+The application works out of the box with default settings. For production deployment, you can optionally create a `.env` file:
 
 ```env
 # Server Configuration
+NODE_ENV=production
 PORT=3000
-NODE_ENV=development
-
-# Database
 DATABASE_URL=./database.sqlite
-
-# Email Configuration
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
-EMAIL_FROM=Cube Notary <noreply@cubenotary.com>
-
-# Stripe Configuration
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 
 # Business Information
 BUSINESS_NAME=Cube Notary
 BUSINESS_PHONE=(312) 468-3477
-BUSINESS_EMAIL=info@cubenotary.com
+BUSINESS_EMAIL=cubenotary@gmail.com
+BUSINESS_ADDRESS=Chicago, IL
 ```
 
 ## 🌐 Deployment Options
@@ -163,48 +138,23 @@ docker run -p 3000:3000 --env-file .env cubenotary
 - `GET /api/bookings/:booking_id` - Get booking details
 - `PATCH /api/bookings/:booking_id/status` - Update booking status
 
-### Payments
-- `POST /api/payments/create-intent` - Create payment intent
-- `POST /api/payments/confirm` - Confirm payment
-- `POST /api/payments/webhook` - Stripe webhook handler
-
-### Email
-- `POST /api/email/send-confirmation` - Send booking confirmation
-- `POST /api/email/test` - Test email configuration
+### Health Check
+- `GET /api/health` - Server health status
 
 ## 🔧 Admin Dashboard
 
 Access the admin dashboard at `/admin.html` to:
 - View and manage all bookings
-- Track revenue and statistics
-- Send confirmation emails
+- Track booking statistics
 - Export booking data
-- Monitor email delivery logs
+- Monitor system status
 
-## 📧 Email Configuration
+## 📞 Contact Integration
 
-### Gmail Setup
-1. Enable 2-Factor Authentication
-2. Generate App Password
-3. Use app password in `EMAIL_PASS`
-
-### Email Templates
-- Professional HTML booking confirmations
-- Payment confirmation emails
-- Responsive design for all devices
-
-## 💳 Payment Processing
-
-### Stripe Integration
-- Secure credit card processing
-- PCI compliant payment forms
-- Real-time payment confirmations
-- Automatic refund capabilities
-
-### Supported Payment Methods
-- Credit cards (Visa, MasterCard, American Express)
-- Debit cards
-- Digital wallets (Apple Pay, Google Pay)
+### Direct Communication
+- Phone and text integration for booking confirmations
+- Direct contact functionality
+- Professional communication channels
 
 ## 🔒 Security Features
 
@@ -226,11 +176,9 @@ Access the admin dashboard at `/admin.html` to:
 
 ## 🧪 Testing
 
-### Test Email Configuration
+### Test Health Check
 ```bash
-curl -X POST http://localhost:3000/api/email/test \
-  -H "Content-Type: application/json" \
-  -d '{"test_email": "your-email@example.com"}'
+curl http://localhost:3000/api/health
 ```
 
 ### Test Booking Creation
@@ -239,11 +187,11 @@ curl -X POST http://localhost:3000/api/bookings \
   -H "Content-Type: application/json" \
   -d '{
     "customer_name": "John Doe",
-    "customer_email": "john@example.com",
+    "customer_phone": "(312) 555-1234",
     "service_type": "General Notary",
     "appointment_date": "2024-12-20",
     "appointment_time": "10:00",
-    "meeting_address": "123 Main St, Chicago, IL"
+    "notes": "Test booking"
   }'
 ```
 
@@ -251,7 +199,7 @@ curl -X POST http://localhost:3000/api/bookings \
 
 - **Phone**: (312) 468-3477
 - **Text**: (312) 468-3477
-- **Email**: info@cubenotary.com
+- **Email**: cubenotary@gmail.com
 - **Service Area**: Illinois
 - **Hours**: 24/7
 - **Website**: https://www.cubenotary.com
@@ -270,9 +218,8 @@ MIT License - see LICENSE file for details
 
 ## 📚 Documentation
 
-- [Setup Guide](SETUP_GUIDE.md) - Detailed setup instructions
-- [API Documentation](API_DOCS.md) - Complete API reference
-- [Deployment Guide](DEPLOYMENT.md) - Production deployment guide
+- [Deployment Ready](DEPLOYMENT_READY.md) - Complete deployment status
+- [Update Render Now](UPDATE_RENDER_NOW.md) - Step-by-step Render deployment guide
 
 ---
 
