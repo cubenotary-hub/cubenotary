@@ -110,6 +110,38 @@
       "amount_paid": 25,
       "created_at": "2025-09-25T21:16:50.843Z",
       "updated_at": "2025-09-25T21:16:50.843Z"
+    },
+    {
+      "id": 8,
+      "booking_id": "CN-MG020WZE-6X5XW",
+      "customer_name": "Website Functionality Test",
+      "customer_email": "functionalitytest@example.com",
+      "customer_phone": "",
+      "service_type": "General Notary",
+      "appointment_date": "2024-12-31",
+      "appointment_time": "14:00",
+      "meeting_address": "123 Test Street, Chicago, IL",
+      "notes": "Testing website functionality after SMS feature addition",
+      "status": "pending",
+      "amount_paid": 25,
+      "created_at": "2025-09-25T23:38:49.466Z",
+      "updated_at": "2025-09-25T23:38:49.466Z"
+    },
+    {
+      "id": 9,
+      "booking_id": "CN-MG024NQ1-5JNKF",
+      "customer_name": "tobi",
+      "customer_email": "oladipupoinc@gmail.com",
+      "customer_phone": "",
+      "service_type": "Apostille",
+      "appointment_date": "2025-09-25",
+      "appointment_time": "03:00",
+      "meeting_address": "3017 W LEXINGTON ST",
+      "notes": "",
+      "status": "pending",
+      "amount_paid": 50,
+      "created_at": "2025-09-25T23:41:44.089Z",
+      "updated_at": "2025-09-25T23:41:44.089Z"
     }
   ],
   "customers": [
@@ -142,12 +174,21 @@
     },
     {
       "email": "functionalitytest@example.com",
-      "name": "Functionality Test Customer",
+      "name": "Website Functionality Test",
       "phone": "",
-      "address": "123 Functionality Test St, Chicago, IL",
-      "updated_at": "2025-09-25T21:16:50.859Z",
+      "address": "123 Test Street, Chicago, IL",
+      "updated_at": "2025-09-25T23:38:49.469Z",
       "id": 4,
       "created_at": "2025-09-25T21:16:50.859Z"
+    },
+    {
+      "email": "oladipupoinc@gmail.com",
+      "name": "tobi",
+      "phone": "",
+      "address": "3017 W LEXINGTON ST",
+      "updated_at": "2025-09-25T23:41:44.093Z",
+      "id": 5,
+      "created_at": "2025-09-25T23:41:44.093Z"
     }
   ],
   "payments": [],
@@ -208,6 +249,22 @@
       "message": "New appointment booked:\n\nService: General Notary\nDate: 2024-12-30\nTime: 11:00\nCustomer: Functionality Test Customer\nEmail: functionalitytest@example.com\nAddress: 123 Functionality Test St, Chicago, IL\nNotes: Testing complete booking functionality\n\nBooking ID: CN-MFZWYBYZ-X6U3E",
       "status": "sent",
       "sent_at": "2025-09-25T21:16:50.877Z"
+    },
+    {
+      "id": 8,
+      "booking_id": "CN-MG020WZE-6X5XW",
+      "phone_number": "3124683477",
+      "message": "New appointment booked:\n\nService: General Notary\nDate: 2024-12-31\nTime: 14:00\nCustomer: Website Functionality Test\nEmail: functionalitytest@example.com\nAddress: 123 Test Street, Chicago, IL\nNotes: Testing website functionality after SMS feature addition\n\nBooking ID: CN-MG020WZE-6X5XW",
+      "status": "sent",
+      "sent_at": "2025-09-25T23:38:49.470Z"
+    },
+    {
+      "id": 9,
+      "booking_id": "CN-MG024NQ1-5JNKF",
+      "phone_number": "3124683477",
+      "message": "New appointment booked:\n\nService: Apostille\nDate: 2025-09-25\nTime: 03:00\nCustomer: tobi\nEmail: oladipupoinc@gmail.com\nAddress: 3017 W LEXINGTON ST\nNotes: None\n\nBooking ID: CN-MG024NQ1-5JNKF",
+      "status": "sent",
+      "sent_at": "2025-09-25T23:41:44.094Z"
     }
   ]
 }

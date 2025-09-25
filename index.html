@@ -301,14 +301,9 @@
         
         <textarea id="notes" placeholder="Additional notes or special requirements (optional)" rows="3"></textarea>
         
-      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 1rem;">
-        <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
-            Book Appointment
-        </button>
-        <button id="smsBtn" onclick="sendBookingViaSMS()" style="background:var(--accent); color:#000; font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
-            📱 Send SMS
-        </button>
-      </div>
+      <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem; margin-top: 1rem;">
+          Book Appointment
+      </button>
       </div>
     </div>
   </div>
@@ -709,39 +704,6 @@
       }
     });
     
-    // Client-side SMS function for manual booking requests
-    function sendBookingViaSMS() {
-      // Get all form values (matching current form structure)
-      var name = document.getElementById('fullname').value;
-      var email = document.getElementById('email').value;
-      var service = document.getElementById('service').value;
-      var time = document.getElementById('time').value;
-      var address = document.getElementById('address').value;
-      var notes = document.getElementById('notes').value;
-      
-      // Get selected date from calendar
-      var selectedDay = modal.dataset.selectedDay;
-      var now = new Date();
-      var currentYear = now.getFullYear();
-      var currentMonth = now.getMonth() + 1;
-      var date = `${currentMonth}/${selectedDay}/${currentYear}`;
-      
-      // Format exactly like your example
-      var smsBody = "New Appointment Request:\n\nDate: " + date + "\nTime: " + time + "\nName: " + name + "\nAddress: " + address + "\nService: " + service + "\nEmail: " + email + "\nNotes: " + notes + "\n\nPlease confirm this appointment";
-      
-      // Create SMS link
-      var smsLink = "sms:3124683477?body=" + encodeURIComponent(smsBody);
-      
-      // Open SMS app
-      window.location.href = smsLink;
-      
-      return false;
-    }
-    
-    function formatDate(dateString) {
-      var date = new Date(dateString);
-      return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-    }
     
     
     
@@ -792,16 +754,15 @@
         // Track successful booking
         fbq('track', 'CompleteRegistration');
         
-        // Show success message
+        // Show success message and automatically open SMS
         const smsMessage = `New appointment booked:\n\nService: ${payload.service_type}\nDate: ${payload.appointment_date}\nTime: ${payload.appointment_time}\nCustomer: ${payload.customer_name}\nEmail: ${payload.customer_email}\nAddress: ${payload.meeting_address}\nNotes: ${payload.notes}`;
         
-        // Try to copy to clipboard
-        navigator.clipboard.writeText(smsMessage).then(() => {
-          alert("✅ Appointment Booked Successfully!\n\n📱 SMS automatically sent to (312) 468-3477\n\nDetails also copied to clipboard for your records");
-        }).catch(() => {
-          // If clipboard fails, show the message in an alert
-          alert("✅ Appointment Booked Successfully!\n\n📱 SMS automatically sent to (312) 468-3477\n\nDetails:\n\n" + smsMessage);
-        });
+        // Show success alert
+        alert("✅ Appointment Booked Successfully!\n\n📱 SMS automatically sent to (312) 468-3477\n\nOpening SMS app for confirmation...");
+        
+        // Automatically open SMS app with booking details
+        const smsLink = "sms:3124683477?body=" + encodeURIComponent(smsMessage);
+        window.location.href = smsLink;
         
         // Close modal and refresh calendar
         modal.classList.remove('show');
