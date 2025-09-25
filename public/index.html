@@ -585,10 +585,85 @@
       console.log('DOM loaded, initializing modern calendar system...');
       
       // Initialize the modern calendar
-      calendar = new ModernCalendar();
-      
-      console.log('Modern booking system initialized successfully');
+      try {
+        calendar = new ModernCalendar();
+        console.log('Modern booking system initialized successfully');
+        
+        // Force calendar to be visible
+        setTimeout(() => {
+          const cal = document.getElementById('calendar');
+          if (cal && cal.children.length === 0) {
+            console.log('Calendar is empty, forcing regeneration...');
+            calendar.render();
+          }
+        }, 100);
+        
+      } catch (error) {
+        console.error('Error initializing calendar:', error);
+        // Fallback: create a simple calendar
+        createFallbackCalendar();
+      }
     });
+    
+    function createFallbackCalendar() {
+      const calendar = document.getElementById('calendar');
+      if (!calendar) return;
+      
+      console.log('Creating fallback calendar...');
+      
+      // Clear calendar
+      calendar.innerHTML = '';
+      
+      // Add day headers
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      dayNames.forEach(day => {
+        const header = document.createElement('div');
+        header.className = 'day-header';
+        header.textContent = day;
+        calendar.appendChild(header);
+      });
+      
+      // Get current month info
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      // Add empty cells for days before month starts
+      for (let i = 0; i < firstDay; i++) {
+        calendar.appendChild(document.createElement('div'));
+      }
+      
+      // Add date buttons
+      for (let day = 1; day <= daysInMonth; day++) {
+        const button = document.createElement('button');
+        button.textContent = day;
+        button.className = 'available';
+        button.title = `Click to book ${day}`;
+        
+        // Check if date is in the past
+        const buttonDate = new Date(year, month, day);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (buttonDate < today) {
+          button.className = 'booked';
+          button.disabled = true;
+          button.title = 'This date has passed';
+        } else {
+          // Add click event
+          button.addEventListener('click', () => {
+            console.log(`Date clicked: ${day}`);
+            openModal({target: {dataset: {day: day}}});
+          });
+        }
+        
+        calendar.appendChild(button);
+      }
+      
+      console.log(`Fallback calendar created with ${daysInMonth} days`);
+    }
     
     function updateCalendarAvailability() {
       const calendarButtons = document.querySelectorAll('#calendar button[data-day]');
