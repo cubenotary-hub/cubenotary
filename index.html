@@ -301,9 +301,14 @@
         
         <textarea id="notes" placeholder="Additional notes or special requirements (optional)" rows="3"></textarea>
         
-      <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
-          Book Appointment
-      </button>
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 1rem;">
+        <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
+            Book Appointment
+        </button>
+        <button id="smsBtn" onclick="sendBookingViaSMS()" style="background:var(--accent); color:#000; font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
+            📱 Send SMS
+        </button>
+      </div>
       </div>
     </div>
   </div>
@@ -703,6 +708,40 @@
         modal.classList.remove('show');
       }
     });
+    
+    // Client-side SMS function for manual booking requests
+    function sendBookingViaSMS() {
+      // Get all form values (matching current form structure)
+      var name = document.getElementById('fullname').value;
+      var email = document.getElementById('email').value;
+      var service = document.getElementById('service').value;
+      var time = document.getElementById('time').value;
+      var address = document.getElementById('address').value;
+      var notes = document.getElementById('notes').value;
+      
+      // Get selected date from calendar
+      var selectedDay = modal.dataset.selectedDay;
+      var now = new Date();
+      var currentYear = now.getFullYear();
+      var currentMonth = now.getMonth() + 1;
+      var date = `${currentMonth}/${selectedDay}/${currentYear}`;
+      
+      // Format exactly like your example
+      var smsBody = "New Appointment Request:\n\nDate: " + date + "\nTime: " + time + "\nName: " + name + "\nAddress: " + address + "\nService: " + service + "\nEmail: " + email + "\nNotes: " + notes + "\n\nPlease confirm this appointment";
+      
+      // Create SMS link
+      var smsLink = "sms:3124683477?body=" + encodeURIComponent(smsBody);
+      
+      // Open SMS app
+      window.location.href = smsLink;
+      
+      return false;
+    }
+    
+    function formatDate(dateString) {
+      var date = new Date(dateString);
+      return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+    }
     
     
     
