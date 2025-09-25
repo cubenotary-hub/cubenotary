@@ -10,7 +10,7 @@ const router = express.Router();
 const bookingSchema = Joi.object({
   customer_name: Joi.string().min(2).max(100).required(),
   customer_email: Joi.string().email().required(),
-  customer_phone: Joi.string().pattern(/^[\+]?[1-9][\d]{0,15}$/).optional(),
+  customer_phone: Joi.string().pattern(/^[\+]?[0-9\s\-\(\)]{10,20}$/).optional().allow(''),
   service_type: Joi.string().valid('General Notary', 'Apostille', 'Power of Attorney', 'RON', 'Mobile Notary').required(),
   appointment_date: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/).required(),
   appointment_time: Joi.string().pattern(/^\d{2}:\d{2}$/).required(),
@@ -60,9 +60,12 @@ router.post('/', async (req, res) => {
     // Validate request body
     const { error, value } = bookingSchema.validate(req.body);
     if (error) {
+      console.error('Booking validation error:', error.details);
+      console.error('Request body:', req.body);
       return res.status(400).json({ 
         error: 'Validation error', 
-        details: error.details.map(d => d.message) 
+        details: error.details.map(d => d.message),
+        received_data: req.body
       });
     }
 
