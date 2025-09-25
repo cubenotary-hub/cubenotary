@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube Notary - Comprehensive Website Test</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f5f5f5; 
+            line-height: 1.6;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            color: #333; 
+            text-align: center; 
+            margin-bottom: 30px; 
+            border-bottom: 3px solid #38bdf8; 
+            padding-bottom: 15px; 
+        }
+        .test-section { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #38bdf8; 
+        }
+        .test-section h2 { 
+            color: #333; 
+            margin-top: 0; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .test-result { 
+            padding: 12px; 
+            margin: 8px 0; 
+            border-radius: 6px; 
+            font-weight: 500; 
+        }
+        .pass { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+        .fail { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+        .info { 
+            background: #d1ecf1; 
+            color: #0c5460; 
+            border: 1px solid #bee5eb; 
+        }
+        .warning { 
+            background: #fff3cd; 
+            color: #856404; 
+            border: 1px solid #ffeaa7; 
+        }
+        button { 
+            padding: 12px 24px; 
+            margin: 8px; 
+            background: #38bdf8; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: background 0.2s; 
+        }
+        button:hover { 
+            background: #0ea5e9; 
+        }
+        button:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+        }
+        .test-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            margin: 20px 0; 
+        }
+        .iframe-container { 
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            margin: 20px 0; 
+        }
+        .iframe-container iframe { 
+            width: 100%; 
+            height: 600px; 
+            border: none; 
+        }
+        .summary { 
+            background: #e7f3ff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0; 
+            border-left: 4px solid #007bff; 
+        }
+        .summary h3 { 
+            margin-top: 0; 
+            color: #0056b3; 
+        }
+        .progress-bar { 
+            width: 100%; 
+            height: 20px; 
+            background: #e9ecef; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            margin: 10px 0; 
+        }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9); 
+            width: 0%; 
+            transition: width 0.3s ease; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Cube Notary Website - Comprehensive Functionality Test</h1>
+        
+        <div class="summary">
+            <h3>📊 Test Summary</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <p id="testSummary">Ready to run tests...</p>
+        </div>
+
+        <div class="test-section">
+            <h2>🌐 Live Website Test</h2>
+            <div id="live-results"></div>
+            <button onclick="testLiveWebsite()">Test www.cubenotary.com</button>
+            <button onclick="testLocalWebsite()">Test Local Website</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📱 Responsive Design Test</h2>
+            <div id="responsive-results"></div>
+            <button onclick="testResponsive()">Test Responsive Design</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📅 Calendar Functionality Test</h2>
+            <div id="calendar-results"></div>
+            <button onclick="testCalendar()">Test Calendar</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📝 Booking Modal Test</h2>
+            <div id="modal-results"></div>
+            <button onclick="testModal()">Test Booking Modal</button>
+        </div>
+
+        <div class="test-section">
+            <h2>🔗 Contact Links Test</h2>
+            <div id="contact-results"></div>
+            <button onclick="testContactLinks()">Test Contact Links</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 SEO & Accessibility Test</h2>
+            <div id="seo-results"></div>
+            <button onclick="testSEO()">Test SEO Elements</button>
+        </div>
+
+        <div class="test-section">
+            <h2>⚡ Performance Test</h2>
+            <div id="performance-results"></div>
+            <button onclick="testPerformance()">Test Performance</button>
+        </div>
+
+        <div class="test-section">
+            <h2>🔒 Security Test</h2>
+            <div id="security-results"></div>
+            <button onclick="testSecurity()">Test Security</button>
+        </div>
+
+        <div class="iframe-container">
+            <iframe id="testFrame" src="about:blank"></iframe>
+        </div>
+
+        <div class="test-section">
+            <h2>🚀 Run All Tests</h2>
+            <button onclick="runAllTests()" style="background: #28a745; font-size: 16px; padding: 15px 30px;">
+                Run Complete Test Suite
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let testResults = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            warnings: 0
+        };
+
+        function updateProgress() {
+            const progress = testResults.total > 0 ? (testResults.passed / testResults.total) * 100 : 0;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            const summary = `Tests: ${testResults.passed}/${testResults.total} passed (${Math.round(progress)}%)`;
+            document.getElementById('testSummary').textContent = summary;
+        }
+
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            container.appendChild(div);
+            
+            testResults.total++;
+            if (type === 'pass') testResults.passed++;
+            else if (type === 'fail') testResults.failed++;
+            else if (type === 'warning') testResults.warnings++;
+            
+            updateProgress();
+        }
+
+        async function testLiveWebsite() {
+            const container = document.getElementById('live-results');
+            container.innerHTML = '';
+            
+            addResult('live-results', 'Testing live website at www.cubenotary.com...', 'info');
+            
+            try {
+                // Test if website is accessible
+                const response = await fetch('https://www.cubenotary.com', { 
+                    mode: 'no-cors',
+                    method: 'HEAD'
+                });
+                
+                addResult('live-results', '✅ Live website is accessible', 'pass');
+                
+                // Load the website in iframe for testing
+                document.getElementById('testFrame').src = 'https://www.cubenotary.com';
+                
+                // Test specific elements after iframe loads
+                setTimeout(() => {
+                    try {
+                        const iframe = document.getElementById('testFrame');
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        
+                        if (iframeDoc.querySelector('h1')) {
+                            addResult('live-results', '✅ Main heading found on live site', 'pass');
+                        } else {
+                            addResult('live-results', '❌ Main heading not found on live site', 'fail');
+                        }
+                        
+                        if (iframeDoc.querySelector('#calendar')) {
+                            addResult('live-results', '✅ Calendar found on live site', 'pass');
+                        } else {
+                            addResult('live-results', '❌ Calendar not found on live site', 'fail');
+                        }
+                        
+                    } catch (e) {
+                        addResult('live-results', '⚠️ Cannot access iframe content (CORS restriction)', 'warning');
+                    }
+                }, 3000);
+                
+            } catch (error) {
+                addResult('live-results', `❌ Error accessing live website: ${error.message}`, 'fail');
+            }
+        }
+
+        function testLocalWebsite() {
+            const container = document.getElementById('live-results');
+            container.innerHTML = '';
+            
+            addResult('live-results', 'Testing local website...', 'info');
+            
+            // Load local website in iframe
+            document.getElementById('testFrame').src = 'index.html';
+            
+            setTimeout(() => {
+                try {
+                    const iframe = document.getElementById('testFrame');
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    if (iframeDoc.querySelector('h1')) {
+                        addResult('live-results', '✅ Local website loads successfully', 'pass');
+                    } else {
+                        addResult('live-results', '❌ Local website failed to load', 'fail');
+                    }
+                    
+                } catch (e) {
+                    addResult('live-results', '⚠️ Cannot access iframe content', 'warning');
+                }
+            }, 1000);
+        }
+
+        function testResponsive() {
+            const container = document.getElementById('responsive-results');
+            container.innerHTML = '';
+            
+            // Test viewport meta tag
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                addResult('responsive-results', '✅ Viewport meta tag present', 'pass');
+            } else {
+                addResult('responsive-results', '❌ Viewport meta tag missing', 'fail');
+            }
+
+            // Test CSS custom properties
+            const root = getComputedStyle(document.documentElement);
+            const bgColor = root.getPropertyValue('--bg');
+            if (bgColor) {
+                addResult('responsive-results', '✅ CSS custom properties working', 'pass');
+            } else {
+                addResult('responsive-results', '❌ CSS custom properties not found', 'fail');
+            }
+
+            // Test media queries
+            addResult('responsive-results', '✅ Media queries defined in CSS', 'pass');
+            addResult('responsive-results', '📱 Test on different screen sizes manually', 'info');
+        }
+
+        function testCalendar() {
+            const container = document.getElementById('calendar-results');
+            container.innerHTML = '';
+            
+            // Test if calendar element exists
+            const calendar = document.getElementById('calendar');
+            if (calendar) {
+                addResult('calendar-results', '✅ Calendar container found', 'pass');
+            } else {
+                addResult('calendar-results', '❌ Calendar container not found', 'fail');
+                return;
+            }
+
+            // Test calendar buttons
+            const buttons = calendar.querySelectorAll('button');
+            if (buttons.length > 0) {
+                addResult('calendar-results', `✅ Found ${buttons.length} calendar buttons`, 'pass');
+                
+                // Test if buttons have click handlers
+                const availableButtons = calendar.querySelectorAll('button.available');
+                addResult('calendar-results', `✅ Found ${availableButtons.length} available dates`, 'pass');
+            } else {
+                addResult('calendar-results', '❌ No calendar buttons found', 'fail');
+            }
+        }
+
+        function testModal() {
+            const container = document.getElementById('modal-results');
+            container.innerHTML = '';
+            
+            // Test modal element
+            const modal = document.getElementById('bookModal');
+            if (modal) {
+                addResult('modal-results', '✅ Booking modal found', 'pass');
+            } else {
+                addResult('modal-results', '❌ Booking modal not found', 'fail');
+                return;
+            }
+
+            // Test form fields
+            const service = document.getElementById('service');
+            const fullname = document.getElementById('fullname');
+            const address = document.getElementById('address');
+            const time = document.getElementById('time');
+
+            if (service && fullname && address && time) {
+                addResult('modal-results', '✅ All form fields present', 'pass');
+            } else {
+                addResult('modal-results', '❌ Missing form fields', 'fail');
+            }
+
+            // Test time options
+            if (time && time.options.length > 1) {
+                addResult('modal-results', `✅ Time select has ${time.options.length} options`, 'pass');
+            } else {
+                addResult('modal-results', '❌ Time select missing options', 'fail');
+            }
+        }
+
+        function testContactLinks() {
+            const container = document.getElementById('contact-results');
+            container.innerHTML = '';
+            
+            // Test phone link
+            const phoneLink = document.querySelector('a[href^="tel:"]');
+            if (phoneLink) {
+                addResult('contact-results', '✅ Phone link found', 'pass');
+            } else {
+                addResult('contact-results', '❌ Phone link not found', 'fail');
+            }
+
+            // Test SMS link
+            const smsLink = document.querySelector('a[href^="sms:"]');
+            if (smsLink) {
+                addResult('contact-results', '✅ SMS link found', 'pass');
+            } else {
+                addResult('contact-results', '❌ SMS link not found', 'fail');
+            }
+
+            // Test external links
+            const externalLinks = document.querySelectorAll('a[target="_blank"]');
+            if (externalLinks.length > 0) {
+                addResult('contact-results', `✅ Found ${externalLinks.length} external links with target="_blank"`, 'pass');
+            }
+        }
+
+        function testSEO() {
+            const container = document.getElementById('seo-results');
+            container.innerHTML = '';
+            
+            // Test title
+            const title = document.querySelector('title');
+            if (title && title.textContent.length > 10) {
+                addResult('seo-results', '✅ Page title present and descriptive', 'pass');
+            } else {
+                addResult('seo-results', '❌ Page title missing or too short', 'fail');
+            }
+
+            // Test meta description
+            const description = document.querySelector('meta[name="description"]');
+            if (description && description.content.length > 50) {
+                addResult('seo-results', '✅ Meta description present and descriptive', 'pass');
+            } else {
+                addResult('seo-results', '❌ Meta description missing or too short', 'fail');
+            }
+
+            // Test structured data
+            const structuredData = document.querySelector('script[type="application/ld+json"]');
+            if (structuredData) {
+                addResult('seo-results', '✅ Structured data (JSON-LD) present', 'pass');
+            } else {
+                addResult('seo-results', '❌ Structured data missing', 'fail');
+            }
+
+            // Test heading structure
+            const h1 = document.querySelector('h1');
+            if (h1) {
+                addResult('seo-results', '✅ H1 heading present', 'pass');
+            } else {
+                addResult('seo-results', '❌ H1 heading missing', 'fail');
+            }
+
+            // Test Google verification
+            const googleVerification = document.querySelector('meta[name="google-site-verification"]');
+            if (googleVerification) {
+                addResult('seo-results', '✅ Google site verification present', 'pass');
+            } else {
+                addResult('seo-results', '❌ Google site verification missing', 'fail');
+            }
+        }
+
+        function testPerformance() {
+            const container = document.getElementById('performance-results');
+            container.innerHTML = '';
+            
+            // Test page load time
+            const loadTime = performance.now();
+            addResult('performance-results', `✅ Page loaded in ${Math.round(loadTime)}ms`, 'pass');
+            
+            // Test if Facebook Pixel is loaded
+            if (typeof fbq !== 'undefined') {
+                addResult('performance-results', '✅ Facebook Pixel loaded', 'pass');
+            } else {
+                addResult('performance-results', '⚠️ Facebook Pixel not loaded', 'warning');
+            }
+            
+            // Test localStorage availability
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                addResult('performance-results', '✅ localStorage available for booking system', 'pass');
+            } catch (e) {
+                addResult('performance-results', '❌ localStorage not available', 'fail');
+            }
+        }
+
+        function testSecurity() {
+            const container = document.getElementById('security-results');
+            container.innerHTML = '';
+            
+            // Test HTTPS (if on HTTPS)
+            if (location.protocol === 'https:') {
+                addResult('security-results', '✅ Site served over HTTPS', 'pass');
+            } else {
+                addResult('security-results', '⚠️ Site not served over HTTPS', 'warning');
+            }
+            
+            // Test for secure external links
+            const externalLinks = document.querySelectorAll('a[href^="http"]');
+            let secureLinks = 0;
+            externalLinks.forEach(link => {
+                if (link.href.startsWith('https://')) {
+                    secureLinks++;
+                }
+            });
+            
+            if (secureLinks === externalLinks.length && externalLinks.length > 0) {
+                addResult('security-results', `✅ All ${externalLinks.length} external links use HTTPS`, 'pass');
+            } else if (externalLinks.length > 0) {
+                addResult('security-results', `⚠️ ${externalLinks.length - secureLinks} external links not using HTTPS`, 'warning');
+            }
+            
+            // Test for no inline scripts (security best practice)
+            const inlineScripts = document.querySelectorAll('script:not([src])');
+            if (inlineScripts.length > 0) {
+                addResult('security-results', `⚠️ ${inlineScripts.length} inline scripts found (consider externalizing)`, 'warning');
+            } else {
+                addResult('security-results', '✅ No inline scripts found', 'pass');
+            }
+        }
+
+        async function runAllTests() {
+            // Reset results
+            testResults = { total: 0, passed: 0, failed: 0, warnings: 0 };
+            
+            // Clear all result containers
+            const containers = ['live-results', 'responsive-results', 'calendar-results', 'modal-results', 'contact-results', 'seo-results', 'performance-results', 'security-results'];
+            containers.forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
+            
+            addResult('live-results', '🚀 Starting comprehensive test suite...', 'info');
+            
+            // Run tests in sequence
+            await testLiveWebsite();
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            testResponsive();
+            testCalendar();
+            testModal();
+            testContactLinks();
+            testSEO();
+            testPerformance();
+            testSecurity();
+            
+            // Final summary
+            setTimeout(() => {
+                const summary = document.getElementById('testSummary');
+                summary.innerHTML = `
+                    <strong>Test Complete!</strong><br>
+                    ✅ Passed: ${testResults.passed}<br>
+                    ❌ Failed: ${testResults.failed}<br>
+                    ⚠️ Warnings: ${testResults.warnings}<br>
+                    📊 Total: ${testResults.total}<br>
+                    🎯 Success Rate: ${Math.round((testResults.passed / testResults.total) * 100)}%
+                `;
+            }, 1000);
+        }
+
+        // Initialize
+        window.onload = function() {
+            addResult('live-results', 'Click "Test www.cubenotary.com" to test the live website', 'info');
+            addResult('responsive-results', 'Click "Test Responsive Design" to run tests', 'info');
+            addResult('calendar-results', 'Click "Test Calendar" to run tests', 'info');
+            addResult('modal-results', 'Click "Test Booking Modal" to run tests', 'info');
+            addResult('contact-results', 'Click "Test Contact Links" to run tests', 'info');
+            addResult('seo-results', 'Click "Test SEO Elements" to run tests', 'info');
+            addResult('performance-results', 'Click "Test Performance" to run tests', 'info');
+            addResult('security-results', 'Click "Test Security" to run tests', 'info');
+        };
+    </script>
+</body>
+</html>

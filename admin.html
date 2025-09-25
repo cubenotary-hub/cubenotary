@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube Notary - Admin Dashboard</title>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card: #fff;
+            --accent: #38bdf8;
+            --text: #333;
+            --border: #dee2e6;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--card);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .main-content {
+            padding: 0 2rem 2rem;
+        }
+        
+        .section {
+            background: var(--card);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .filters {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .filter-group label {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status.completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .payment-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .payment-status.paid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .payment-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .payment-status.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: #333;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+            
+            .main-content {
+                padding: 0 1rem 1rem;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Cube Notary Admin Dashboard</h1>
+        <div>
+            <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+            <button class="btn btn-primary" onclick="exportBookings()">📊 Export</button>
+        </div>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="totalBookings">-</div>
+            <div class="stat-label">Total Bookings</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="pendingBookings">-</div>
+            <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="confirmedBookings">-</div>
+            <div class="stat-label">Confirmed</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="totalRevenue">-</div>
+            <div class="stat-label">Total Revenue</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">📅 Recent Bookings</h2>
+                <button class="btn btn-primary" onclick="showBookingModal()">➕ New Booking</button>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="statusFilter" onchange="filterBookings()">
+                        <option value="">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date From</label>
+                    <input type="date" id="dateFromFilter" onchange="filterBookings()">
+                </div>
+                <div class="filter-group">
+                    <label>Date To</label>
+                    <input type="date" id="dateToFilter" onchange="filterBookings()">
+                </div>
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchFilter" placeholder="Name, email, or booking ID" onkeyup="filterBookings()">
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTable">
+                        <tr>
+                            <td colspan="8" class="loading">Loading bookings...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">📧 Email Logs</h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Email Type</th>
+                            <th>Recipient</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Sent At</th>
+                        </tr>
+                    </thead>
+                    <tbody id="emailLogsTable">
+                        <tr>
+                            <td colspan="6" class="loading">Loading email logs...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Booking</h3>
+                <button class="close" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label>Booking ID</label>
+                    <input type="text" id="editBookingId" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" id="editCustomerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Customer Email</label>
+                    <input type="email" id="editCustomerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Service Type</label>
+                    <select id="editServiceType" required>
+                        <option value="General Notary">General Notary</option>
+                        <option value="Apostille">Apostille</option>
+                        <option value="Power of Attorney">Power of Attorney</option>
+                        <option value="RON">Remote Online Notary (RON)</option>
+                        <option value="Mobile Notary">Mobile Notary</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Appointment Date</label>
+                    <input type="date" id="editAppointmentDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Appointment Time</label>
+                    <input type="time" id="editAppointmentTime" required>
+                </div>
+                <div class="form-group">
+                    <label>Meeting Address</label>
+                    <textarea id="editMeetingAddress" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="editStatus" required>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="editNotes"></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="submit" class="btn btn-success">💾 Save Changes</button>
+                    <button type="button" class="btn btn-primary" onclick="sendConfirmationEmail()">📧 Send Confirmation</button>
+                    <button type="button" class="btn btn-danger" onclick="closeBookingModal()">❌ Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://localhost:3000/api' 
+            : 'https://api.cubenotary.com/api';
+
+        let allBookings = [];
+        let filteredBookings = [];
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadBookings();
+            loadEmailLogs();
+        });
+
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings`);
+                const data = await response.json();
+                
+                const bookings = data.bookings || [];
+                const totalBookings = bookings.length;
+                const pendingBookings = bookings.filter(b => b.status === 'pending').length;
+                const confirmedBookings = bookings.filter(b => b.status === 'confirmed').length;
+                const totalRevenue = bookings
+                    .filter(b => b.payment_status === 'paid')
+                    .reduce((sum, b) => sum + (b.amount_paid || 0), 0);
+
+                document.getElementById('totalBookings').textContent = totalBookings;
+                document.getElementById('pendingBookings').textContent = pendingBookings;
+                document.getElementById('confirmedBookings').textContent = confirmedBookings;
+                document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        async function loadBookings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings`);
+                const data = await response.json();
+                
+                allBookings = data.bookings || [];
+                filteredBookings = [...allBookings];
+                renderBookings();
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                document.getElementById('bookingsTable').innerHTML = 
+                    '<tr><td colspan="8" class="error">Error loading bookings</td></tr>';
+            }
+        }
+
+        function renderBookings() {
+            const tbody = document.getElementById('bookingsTable');
+            
+            if (filteredBookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="loading">No bookings found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filteredBookings.map(booking => `
+                <tr>
+                    <td><strong>${booking.booking_id}</strong></td>
+                    <td>
+                        <div>${booking.customer_name}</div>
+                        <small style="color: #666;">${booking.customer_email}</small>
+                    </td>
+                    <td>${booking.service_type}</td>
+                    <td>
+                        <div>${new Date(booking.appointment_date).toLocaleDateString()}</div>
+                        <small style="color: #666;">${booking.appointment_time}</small>
+                    </td>
+                    <td><span class="status ${booking.status}">${booking.status}</span></td>
+                    <td><span class="payment-status ${booking.payment_status || 'pending'}">${booking.payment_status || 'pending'}</span></td>
+                    <td>$${(booking.amount_paid || 0).toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editBooking('${booking.booking_id}')">✏️ Edit</button>
+                        <button class="btn btn-sm btn-success" onclick="sendConfirmationEmail('${booking.booking_id}')">📧 Email</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterBookings() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const dateFromFilter = document.getElementById('dateFromFilter').value;
+            const dateToFilter = document.getElementById('dateToFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+
+            filteredBookings = allBookings.filter(booking => {
+                const matchesStatus = !statusFilter || booking.status === statusFilter;
+                const matchesDateFrom = !dateFromFilter || new Date(booking.appointment_date) >= new Date(dateFromFilter);
+                const matchesDateTo = !dateToFilter || new Date(booking.appointment_date) <= new Date(dateToFilter);
+                const matchesSearch = !searchFilter || 
+                    booking.customer_name.toLowerCase().includes(searchFilter) ||
+                    booking.customer_email.toLowerCase().includes(searchFilter) ||
+                    booking.booking_id.toLowerCase().includes(searchFilter);
+
+                return matchesStatus && matchesDateFrom && matchesDateTo && matchesSearch;
+            });
+
+            renderBookings();
+        }
+
+        async function loadEmailLogs() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/email/logs`);
+                const data = await response.json();
+                
+                const tbody = document.getElementById('emailLogsTable');
+                const logs = data.email_logs || [];
+                
+                if (logs.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="loading">No email logs found</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = logs.slice(0, 20).map(log => `
+                    <tr>
+                        <td>${log.booking_id}</td>
+                        <td>${log.email_type}</td>
+                        <td>${log.recipient_email}</td>
+                        <td>${log.subject}</td>
+                        <td><span class="status ${log.status}">${log.status}</span></td>
+                        <td>${new Date(log.sent_at).toLocaleString()}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading email logs:', error);
+                document.getElementById('emailLogsTable').innerHTML = 
+                    '<tr><td colspan="6" class="error">Error loading email logs</td></tr>';
+            }
+        }
+
+        function editBooking(bookingId) {
+            const booking = allBookings.find(b => b.booking_id === bookingId);
+            if (!booking) return;
+
+            document.getElementById('editBookingId').value = booking.booking_id;
+            document.getElementById('editCustomerName').value = booking.customer_name;
+            document.getElementById('editCustomerEmail').value = booking.customer_email;
+            document.getElementById('editServiceType').value = booking.service_type;
+            document.getElementById('editAppointmentDate').value = booking.appointment_date;
+            document.getElementById('editAppointmentTime').value = booking.appointment_time;
+            document.getElementById('editMeetingAddress').value = booking.meeting_address;
+            document.getElementById('editStatus').value = booking.status;
+            document.getElementById('editNotes').value = booking.notes || '';
+
+            document.getElementById('bookingModal').classList.add('show');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.remove('show');
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const bookingId = document.getElementById('editBookingId').value;
+            const status = document.getElementById('editStatus').value;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                if (response.ok) {
+                    alert('Booking updated successfully!');
+                    closeBookingModal();
+                    loadBookings();
+                    loadStats();
+                } else {
+                    alert('Error updating booking');
+                }
+            } catch (error) {
+                console.error('Error updating booking:', error);
+                alert('Error updating booking');
+            }
+        });
+
+        async function sendConfirmationEmail(bookingId) {
+            if (!bookingId) {
+                bookingId = document.getElementById('editBookingId').value;
+            }
+            
+            if (!bookingId) {
+                alert('No booking selected');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/email/send-confirmation`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ booking_id: bookingId })
+                });
+
+                if (response.ok) {
+                    alert('Confirmation email sent successfully!');
+                    loadEmailLogs();
+                } else {
+                    alert('Error sending confirmation email');
+                }
+            } catch (error) {
+                console.error('Error sending email:', error);
+                alert('Error sending confirmation email');
+            }
+        }
+
+        function refreshData() {
+            loadStats();
+            loadBookings();
+            loadEmailLogs();
+        }
+
+        function exportBookings() {
+            const csvContent = [
+                ['Booking ID', 'Customer Name', 'Email', 'Service', 'Date', 'Time', 'Status', 'Payment Status', 'Amount'],
+                ...filteredBookings.map(booking => [
+                    booking.booking_id,
+                    booking.customer_name,
+                    booking.customer_email,
+                    booking.service_type,
+                    booking.appointment_date,
+                    booking.appointment_time,
+                    booking.status,
+                    booking.payment_status || 'pending',
+                    booking.amount_paid || 0
+                ])
+            ].map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cubenotary-bookings-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function showBookingModal() {
+            // Clear form for new booking
+            document.getElementById('bookingForm').reset();
+            document.getElementById('editBookingId').value = '';
+            document.getElementById('bookingModal').classList.add('show');
+        }
+    </script>
+</body>
+</html>

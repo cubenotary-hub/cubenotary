@@ -8,6 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-site-verification" content="aLu2doSVazCKBIwjEA5ZmtERc6bjFtnkDJifzhwAOaI" />
   <meta name="consent" content="granted" />
+  
+  <!-- Stripe.js for payment processing -->
+  <script src="https://js.stripe.com/v3/"></script>
 
   <!-- Meta Pixel Code -->
   <script>
@@ -305,63 +308,61 @@
     <div class="modal-content">
       <button class="close" id="closeModal" aria-label="Close">&times;</button>
       <h3>Book 24-Hr Appointment</h3>
-      <input type="text" id="service" placeholder="What do you need notarized?" required>
-      <input type="text" id="fullname" placeholder="Full Name" required>
-      <input type="text" id="address" placeholder="Meeting Address" required>
-      <select id="time" required>
-        <option value="" disabled selected>Select time (24 h)</option>
-        <option value="00:00">00:00</option>
-        <option value="00:30">00:30</option>
-        <option value="01:00">01:00</option>
-        <option value="01:30">01:30</option>
-        <option value="02:00">02:00</option>
-        <option value="02:30">02:30</option>
-        <option value="03:00">03:00</option>
-        <option value="03:30">03:30</option>
-        <option value="04:00">04:00</option>
-        <option value="04:30">04:30</option>
-        <option value="05:00">05:00</option>
-        <option value="05:30">05:30</option>
-        <option value="06:00">06:00</option>
-        <option value="06:30">06:30</option>
-        <option value="07:00">07:00</option>
-        <option value="07:30">07:30</option>
-        <option value="08:00">08:00</option>
-        <option value="08:30">08:30</option>
-        <option value="09:00">09:00</option>
-        <option value="09:30">09:30</option>
-        <option value="10:00">10:00</option>
-        <option value="10:30">10:30</option>
-        <option value="11:00">11:00</option>
-        <option value="11:30">11:30</option>
-        <option value="12:00">12:00</option>
-        <option value="12:30">12:30</option>
-        <option value="13:00">13:00</option>
-        <option value="13:30">13:30</option>
-        <option value="14:00">14:00</option>
-        <option value="14:30">14:30</option>
-        <option value="15:00">15:00</option>
-        <option value="15:30">15:30</option>
-        <option value="16:00">16:00</option>
-        <option value="16:30">16:30</option>
-        <option value="17:00">17:00</option>
-        <option value="17:30">17:30</option>
-        <option value="18:00">18:00</option>
-        <option value="18:30">18:30</option>
-        <option value="19:00">19:00</option>
-        <option value="19:30">19:30</option>
-        <option value="20:00">20:00</option>
-        <option value="20:30">20:30</option>
-        <option value="21:00">21:00</option>
-        <option value="21:30">21:30</option>
-        <option value="22:00">22:00</option>
-        <option value="22:30">22:30</option>
-        <option value="23:00">23:00</option>
-        <option value="23:30">23:30</option>
-      </select>
-      <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
-        Book your Appointment now
-      </button>
+      
+      <div id="bookingForm">
+        <select id="service" required>
+          <option value="" disabled selected>Select Service Type</option>
+          <option value="General Notary">General Notary - $25.00</option>
+          <option value="Apostille">Apostille - $50.00</option>
+          <option value="Power of Attorney">Power of Attorney - $35.00</option>
+          <option value="RON">Remote Online Notary (RON) - $30.00</option>
+          <option value="Mobile Notary">Mobile Notary - $40.00</option>
+        </select>
+        
+        <input type="text" id="fullname" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="tel" id="phone" placeholder="Phone Number (optional)">
+        <input type="text" id="address" placeholder="Meeting Address" required>
+        
+        <select id="time" required>
+          <option value="" disabled selected>Select time (24 h)</option>
+        </select>
+        
+        <textarea id="notes" placeholder="Additional notes or special requirements (optional)" rows="3"></textarea>
+        
+        <div id="serviceFee" style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0; text-align: center; font-weight: 600; color: #333;">
+          Service Fee: <span id="feeAmount">$0.00</span>
+        </div>
+        
+        <button id="saveBtn" style="background:#111; color:var(--accent); font-weight:700; cursor:pointer; border:2px solid var(--accent); padding:.6rem 1.2rem; border-radius:4px; font-size:1rem;">
+          Book & Pay Now
+        </button>
+      </div>
+      
+      <div id="paymentForm" style="display: none;">
+        <h4>Complete Your Payment</h4>
+        <div id="paymentSummary" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+          <h5>Booking Summary</h5>
+          <p><strong>Service:</strong> <span id="summaryService"></span></p>
+          <p><strong>Date:</strong> <span id="summaryDate"></span></p>
+          <p><strong>Time:</strong> <span id="summaryTime"></span></p>
+          <p><strong>Amount:</strong> <span id="summaryAmount"></span></p>
+        </div>
+        
+        <div id="stripe-card-element" style="background: white; padding: 15px; border-radius: 4px; border: 1px solid #ccc; margin: 15px 0;">
+          <!-- Stripe Elements will create form elements here -->
+        </div>
+        
+        <div id="card-errors" role="alert" style="color: #dc3545; margin: 10px 0;"></div>
+        
+        <button id="payBtn" style="background:#28a745; color:white; font-weight:700; cursor:pointer; border:none; padding:.6rem 1.2rem; border-radius:4px; font-size:1rem; width:100%;">
+          Pay $<span id="payAmount">0.00</span> Now
+        </button>
+        
+        <button id="backBtn" style="background:#6c757d; color:white; font-weight:700; cursor:pointer; border:none; padding:.6rem 1.2rem; border-radius:4px; font-size:1rem; width:100%; margin-top:10px;">
+          Back to Booking Form
+        </button>
+      </div>
     </div>
   </div>
 
@@ -383,8 +384,25 @@
   </footer>
 
   <script>
-    // Booking system - track booked appointments
+    // API Configuration
+    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:3000/api' 
+      : 'https://api.cubenotary.com/api';
+    
+    // Stripe Configuration
+    const STRIPE_PUBLISHABLE_KEY = 'pk_test_your_stripe_publishable_key'; // Replace with your actual key
+    
+    // Booking system - now integrated with backend
     const BOOKING_STORAGE_KEY = 'cubenotary_bookings';
+    
+    // Service pricing
+    const SERVICE_FEES = {
+      'General Notary': 25.00,
+      'Apostille': 50.00,
+      'Power of Attorney': 35.00,
+      'RON': 30.00,
+      'Mobile Notary': 40.00
+    };
     
     function getBookedAppointments() {
       const stored = localStorage.getItem(BOOKING_STORAGE_KEY);
@@ -417,6 +435,67 @@
         }
       }
       return bookedTimes;
+    }
+    
+    // API Functions
+    async function fetchAvailability(date) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/bookings/availability/${date}`);
+        if (!response.ok) throw new Error('Failed to fetch availability');
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching availability:', error);
+        return { available_times: [], booked_times: [] };
+      }
+    }
+    
+    async function createBooking(bookingData) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/bookings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bookingData)
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to create booking');
+        }
+        
+        return await response.json();
+      } catch (error) {
+        console.error('Error creating booking:', error);
+        throw error;
+      }
+    }
+    
+    async function createPaymentIntent(bookingId, amount, customerEmail, customerName) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/payments/create-intent`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            booking_id: bookingId,
+            amount: amount,
+            customer_email: customerEmail,
+            customer_name: customerName
+          })
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to create payment intent');
+        }
+        
+        return await response.json();
+      } catch (error) {
+        console.error('Error creating payment intent:', error);
+        throw error;
+      }
     }
 
     // Simple calendar generation function
@@ -571,59 +650,188 @@
       }
     });
     
-    document.getElementById('saveBtn').onclick = () => {
+    // Stripe Elements setup
+    let stripe, elements, cardElement;
+    
+    async function initializeStripe() {
+      if (typeof Stripe === 'undefined') {
+        console.error('Stripe.js not loaded');
+        return false;
+      }
+      
+      stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+      elements = stripe.elements();
+      
+      cardElement = elements.create('card', {
+        style: {
+          base: {
+            fontSize: '16px',
+            color: '#424770',
+            '::placeholder': {
+              color: '#aab7c4',
+            },
+          },
+        },
+      });
+      
+      cardElement.mount('#stripe-card-element');
+      
+      cardElement.on('change', ({error}) => {
+        const displayError = document.getElementById('card-errors');
+        if (error) {
+          displayError.textContent = error.message;
+        } else {
+          displayError.textContent = '';
+        }
+      });
+      
+      return true;
+    }
+    
+    // Update service fee when service type changes
+    document.getElementById('service').addEventListener('change', function() {
+      const serviceType = this.value;
+      const fee = SERVICE_FEES[serviceType] || 0;
+      document.getElementById('feeAmount').textContent = `$${fee.toFixed(2)}`;
+    });
+    
+    document.getElementById('saveBtn').onclick = async () => {
       const now = new Date();
       const currentYear = now.getFullYear();
       const currentMonth = now.getMonth() + 1;
       
       const payload = {
-        day: modal.dataset.selectedDay,
-        month: currentMonth, 
-        year: currentYear,
-        service: document.getElementById('service').value.trim(),
-        fullname: document.getElementById('fullname').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        time: document.getElementById('time').value
+        customer_name: document.getElementById('fullname').value.trim(),
+        customer_email: document.getElementById('email').value.trim(),
+        customer_phone: document.getElementById('phone').value.trim(),
+        service_type: document.getElementById('service').value.trim(),
+        appointment_date: `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${modal.dataset.selectedDay.padStart(2, '0')}`,
+        appointment_time: document.getElementById('time').value,
+        meeting_address: document.getElementById('address').value.trim(),
+        notes: document.getElementById('notes').value.trim()
       };
       
       // Validation
-      if (!payload.service || !payload.fullname || !payload.address || !payload.time) {
-        alert("Please complete every field."); 
+      if (!payload.service_type || !payload.customer_name || !payload.customer_email || !payload.meeting_address || !payload.appointment_time) {
+        alert("Please complete all required fields."); 
+        return;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(payload.customer_email)) {
+        alert("Please enter a valid email address.");
         return;
       }
       
       // Basic validation
-      if (payload.fullname.length < 2) {
+      if (payload.customer_name.length < 2) {
         alert("Please enter a valid full name.");
         return;
       }
       
-      // Check if time slot is still available (prevent double-booking)
-      if (isTimeSlotBooked(payload.day, payload.month, payload.year, payload.time)) {
-        alert("Sorry, this time slot was just booked by another customer. Please select a different time.");
-        updateTimeDropdown(); // Refresh available times
+      try {
+        // Show loading state
+        document.getElementById('saveBtn').textContent = 'Creating Booking...';
+        document.getElementById('saveBtn').disabled = true;
+        
+        // Create booking in backend
+        const bookingResult = await createBooking(payload);
+        
+        // Show payment form
+        document.getElementById('bookingForm').style.display = 'none';
+        document.getElementById('paymentForm').style.display = 'block';
+        
+        // Update payment summary
+        const serviceFee = SERVICE_FEES[payload.service_type] || 0;
+        document.getElementById('summaryService').textContent = payload.service_type;
+        document.getElementById('summaryDate').textContent = payload.appointment_date;
+        document.getElementById('summaryTime').textContent = payload.appointment_time;
+        document.getElementById('summaryAmount').textContent = `$${serviceFee.toFixed(2)}`;
+        document.getElementById('payAmount').textContent = serviceFee.toFixed(2);
+        
+        // Initialize Stripe if not already done
+        if (!stripe) {
+          await initializeStripe();
+        }
+        
+        // Store booking data for payment
+        window.currentBooking = {
+          ...bookingResult.booking,
+          booking_id: bookingResult.booking_id
+        };
+        
+      } catch (error) {
+        alert(`Error creating booking: ${error.message}`);
+        document.getElementById('saveBtn').textContent = 'Book & Pay Now';
+        document.getElementById('saveBtn').disabled = false;
+      }
+    };
+    
+    // Handle payment
+    document.getElementById('payBtn').onclick = async () => {
+      if (!window.currentBooking) {
+        alert('No booking data found. Please try again.');
         return;
       }
       
-      // Save the booking
-      saveBooking(payload.day, payload.month, payload.year, payload.time, payload.service, payload.fullname, payload.address);
-      
-      // Track successful appointment booking
-      fbq('track', 'CompleteRegistration', {
-        content_name: payload.service,
-        content_category: 'Appointment Booking'
-      });
-      
-      console.table(payload); // TODO: send to backend
-      modal.classList.remove('show');
-      document.querySelectorAll('#bookModal input, #bookModal select').forEach(i => i.value = '');
-      
-      // Show success message with booking details
-      const appointmentDate = `${payload.month}/${payload.day}/${payload.year}`;
-      alert(`✅ Appointment Booked Successfully!\n\n📅 Date: ${appointmentDate}\n⏰ Time: ${payload.time}\n👤 Name: ${payload.fullname}\n📍 Address: ${payload.address}\n📋 Service: ${payload.service}\n\nWe'll send you a confirmation shortly!`);
-      
-      // Refresh the calendar to show updated availability
-      location.reload();
+      try {
+        // Show loading state
+        document.getElementById('payBtn').textContent = 'Processing Payment...';
+        document.getElementById('payBtn').disabled = true;
+        
+        // Create payment intent
+        const paymentIntent = await createPaymentIntent(
+          window.currentBooking.booking_id,
+          window.currentBooking.amount_paid,
+          window.currentBooking.customer_email,
+          window.currentBooking.customer_name
+        );
+        
+        // Confirm payment with Stripe
+        const {error, paymentIntent: confirmedPayment} = await stripe.confirmCardPayment(
+          paymentIntent.client_secret,
+          {
+            payment_method: {
+              card: cardElement,
+            }
+          }
+        );
+        
+        if (error) {
+          alert(`Payment failed: ${error.message}`);
+          document.getElementById('payBtn').textContent = 'Pay $' + window.currentBooking.amount_paid.toFixed(2) + ' Now';
+          document.getElementById('payBtn').disabled = false;
+        } else {
+          // Payment successful
+          alert(`✅ Payment Successful!\n\nYour appointment has been confirmed.\n\n📧 Check your email for confirmation details.\n\nBooking ID: ${window.currentBooking.booking_id}`);
+          
+          // Track successful payment
+          fbq('track', 'Purchase', {
+            value: window.currentBooking.amount_paid,
+            currency: 'USD',
+            content_name: window.currentBooking.service_type
+          });
+          
+          // Close modal and refresh
+          modal.classList.remove('show');
+          document.querySelectorAll('#bookModal input, #bookModal select, #bookModal textarea').forEach(i => i.value = '');
+          location.reload();
+        }
+        
+      } catch (error) {
+        alert(`Payment error: ${error.message}`);
+        document.getElementById('payBtn').textContent = 'Pay $' + window.currentBooking.amount_paid.toFixed(2) + ' Now';
+        document.getElementById('payBtn').disabled = false;
+      }
+    };
+    
+    // Back button handler
+    document.getElementById('backBtn').onclick = () => {
+      document.getElementById('paymentForm').style.display = 'none';
+      document.getElementById('bookingForm').style.display = 'block';
+      document.getElementById('saveBtn').textContent = 'Book & Pay Now';
+      document.getElementById('saveBtn').disabled = false;
     };
   </script>
 </body>
