@@ -1,7 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
 const moment = require('moment');
-const { getDatabase, generateBookingId } = require('../database/init');
+const { getDatabase, generateBookingId, dbOperations } = require('../database/init');
 const { sendBookingConfirmation } = require('../services/emailService');
 
 const router = express.Router();
@@ -28,11 +28,8 @@ router.get('/availability/:date', async (req, res) => {
       return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD' });
     }
 
-    const db = getDatabase();
-    const rows = db.prepare(
-      'SELECT appointment_time FROM bookings WHERE appointment_date = ? AND status IN ("confirmed", "pending")'
-    ).all(date);
-    const bookedTimes = rows.map(row => row.appointment_time);
+    const bookedBookings = dbOperations.getBookingsByDate(date);
+    const bookedTimes = bookedBookings.map(booking => booking.appointment_time);
 
     // Generate all possible time slots (every 30 minutes from 00:00 to 23:30)
     const allTimeSlots = [];
@@ -81,10 +78,10 @@ router.post('/', async (req, res) => {
     } = value;
 
     // Check if the time slot is still available
-    const db = getDatabase();
-    const existingBooking = db.prepare(
-      'SELECT id FROM bookings WHERE appointment_date = ? AND appointment_time = ? AND status IN ("confirmed", "pending")'
-    ).get(appointment_date, appointment_time);
+    const existingBookings = dbOperations.getBookingsByDate(appointment_date);
+    const existingBooking = existingBookings.find(booking => 
+      booking.appointment_time === appointment_time
+    );
 
     if (existingBooking) {
       return res.status(409).json({ 
@@ -108,28 +105,27 @@ router.post('/', async (req, res) => {
     const service_fee = serviceFees[service_type] || 25.00;
 
     // Insert booking into database
-    const insertBooking = db.prepare(`
-      INSERT INTO bookings (
-        booking_id, customer_name, customer_email, customer_phone,
-        service_type, appointment_date, appointment_time, meeting_address,
-        notes, status, amount_paid
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
-    `);
-    
-    const result = insertBooking.run(
-      booking_id, customer_name, customer_email, customer_phone,
-      service_type, appointment_date, appointment_time, meeting_address,
-      notes || '', service_fee
-    );
-    
-    const booking = { id: result.lastInsertRowid, booking_id };
+    const booking = dbOperations.insertBooking({
+      booking_id,
+      customer_name,
+      customer_email,
+      customer_phone,
+      service_type,
+      appointment_date,
+      appointment_time,
+      meeting_address,
+      notes: notes || '',
+      status: 'pending',
+      amount_paid: service_fee
+    });
 
     // Store or update customer information
-    const insertCustomer = db.prepare(`
-      INSERT OR REPLACE INTO customers (email, name, phone, address, updated_at)
-      VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-    `);
-    insertCustomer.run(customer_email, customer_name, customer_phone || '', meeting_address);
+    dbOperations.insertOrUpdateCustomer({
+      email: customer_email,
+      name: customer_name,
+      phone: customer_phone || '',
+      address: meeting_address
+    });
 
     // Send SMS notification to (312) 468-3477
     try {
@@ -151,11 +147,12 @@ Booking ID: ${booking_id}`;
       console.log('---');
 
       // Store SMS log in database
-      const insertSmsLog = db.prepare(`
-        INSERT INTO sms_logs (booking_id, phone_number, message, status, sent_at)
-        VALUES (?, ?, ?, 'sent', CURRENT_TIMESTAMP)
-      `);
-      insertSmsLog.run(booking_id, '3124683477', smsMessage);
+      dbOperations.insertSmsLog({
+        booking_id,
+        phone_number: '3124683477',
+        message: smsMessage,
+        status: 'sent'
+      });
 
     } catch (smsError) {
       console.error('Failed to send SMS notification:', smsError);
@@ -208,8 +205,7 @@ router.get('/:booking_id', async (req, res) => {
   try {
     const { booking_id } = req.params;
     
-    const db = getDatabase();
-    const booking = db.prepare('SELECT * FROM bookings WHERE booking_id = ?').get(booking_id);
+    const booking = dbOperations.getBookingById(booking_id);
 
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
@@ -233,11 +229,9 @@ router.patch('/:booking_id/status', async (req, res) => {
       return res.status(400).json({ error: 'Invalid status' });
     }
 
-    const db = getDatabase();
-    const updateBooking = db.prepare('UPDATE bookings SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE booking_id = ?');
-    const result = updateBooking.run(status, booking_id);
+    const success = dbOperations.updateBookingStatus(booking_id, status);
     
-    if (result.changes === 0) {
+    if (!success) {
       throw new Error('Booking not found');
     }
 
@@ -273,8 +267,7 @@ router.get('/', async (req, res) => {
     query += ' ORDER BY appointment_date DESC, appointment_time DESC LIMIT ? OFFSET ?';
     params.push(parseInt(limit), parseInt(offset));
 
-    const db = getDatabase();
-    const bookings = db.prepare(query).all(...params);
+    const bookings = dbOperations.getAllBookings(filters);
 
     res.json({ bookings });
 

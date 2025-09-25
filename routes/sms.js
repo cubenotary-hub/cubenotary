@@ -1,5 +1,5 @@
 const express = require('express');
-const { getDatabase } = require('../database/init');
+const { getDatabase, dbOperations } = require('../database/init');
 
 const router = express.Router();
 
@@ -32,12 +32,12 @@ Booking ID: ${booking_id}`;
     console.log('---');
 
     // Store SMS log in database
-    const db = getDatabase();
-    const insertSmsLog = db.prepare(`
-      INSERT INTO sms_logs (booking_id, phone_number, message, status, sent_at)
-      VALUES (?, ?, ?, 'sent', CURRENT_TIMESTAMP)
-    `);
-    insertSmsLog.run(booking_id, '3124683477', smsMessage);
+    dbOperations.insertSmsLog({
+      booking_id,
+      phone_number: '3124683477',
+      message: smsMessage,
+      status: 'sent'
+    });
 
     res.json({
       success: true,
@@ -56,8 +56,7 @@ router.get('/logs', async (req, res) => {
   try {
     const { limit = 50, offset = 0 } = req.query;
 
-    const db = getDatabase();
-    const logs = db.prepare('SELECT * FROM sms_logs ORDER BY sent_at DESC LIMIT ? OFFSET ?').all(parseInt(limit), parseInt(offset));
+    const logs = dbOperations.getSmsLogs(parseInt(limit), parseInt(offset));
 
     res.json({ sms_logs: logs });
 
