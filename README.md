@@ -1,6 +1,3 @@
-Absolutely! Here's your updated README file that you can copy and paste directly into GitHub:
-
-```markdown
 # Cube Notary - Professional Notary Services
 
 Professional notary public website for 24-hour mobile and online notary services throughout Illinois with modern booking system.
